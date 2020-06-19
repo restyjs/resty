@@ -1,0 +1,25 @@
+{
+  "name": "resty",
+  "version": "0.0.1",
+  "description": "A Node.js framework",
+  "main": "dist",
+  "repository": "https://github.com/restyjs/resty",
+  "author": "Satish Babariya",
+  "license": "MIT",
+  "private": false,
+  "devDependencies": {
+    "@types/express": "^4.17.6",
+    "@types/node": "^14.0.13",
+    "@types/reflect-metadata": "^0.1.0",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.5"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "reflect-metadata": "^0.1.13",
+    "typedi": "^0.,8.0"
+  },
+  "scripts": {
+    "dev": "ts-node example/main.ts"
+  }
+}
