@@ -5,7 +5,7 @@ import resty, {
   Response,
   NextFunction,
 } from "../src";
-import { response, json } from "express";
+import { Post } from "../src/decorators/HttpMethods";
 
 @Controller("/")
 class HelloController {
@@ -26,6 +26,11 @@ class HelloController {
 
   @Get("/health")
   health(req: Request, res: Response, next: NextFunction) {
+    return res.json({ status: "ok" }).status(200);
+  }
+
+  @Post("/health")
+  postHealth(req: Request, res: Response, next: NextFunction) {
     return res.json({ status: "ok" }).status(200);
   }
 }
