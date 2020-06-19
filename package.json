@@ -31,5 +31,13 @@
     "build": "tsc",
     "dev": "ts-node example/main.ts",
     "test": "jest"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/dist/"
+    ]
   }
 }
