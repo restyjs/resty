@@ -1,5 +1,9 @@
 import { resty } from "./resty";
-import { freemem } from "os";
+import { Request, Response, NextFunction } from "express";
 
-export * from "./decorators/controller";
+export { Controller, ControllerMetadata } from "./decorators/Controller";
+export { Get, HTTPMethod, HTTPMethodMetadata } from "./decorators/HttpMethods";
+
+export { Request, Response, NextFunction };
+
 export default resty;

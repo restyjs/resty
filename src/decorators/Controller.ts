@@ -1,14 +1,23 @@
-const metadataKey = "resty:controller";
+import { MetadataKeys } from "../metadataKeys";
+import express from "express";
 
-interface ControllerMetadata {
+export interface ControllerMetadata {
   path: string;
+  middlewares: express.RequestHandler[];
+  options?: express.RouterOptions;
 }
 
-export function Controller(path: string) {
+export function Controller(
+  path: string,
+  middlewares: express.RequestHandler[] = [],
+  options?: express.RouterOptions
+) {
   return function (target: any) {
     const metadata: ControllerMetadata = {
       path: path,
+      middlewares: middlewares,
+      options: options,
     };
-    Reflect.defineMetadata(metadataKey, metadata, target);
+    Reflect.defineMetadata(MetadataKeys.controller, metadata, target);
   };
 }
