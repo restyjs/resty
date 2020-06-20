@@ -5,6 +5,10 @@ import { MetadataKeys } from "./metadataKeys";
 import { exit } from "process";
 import { ControllerMetadata } from "./decorators/Controller";
 import { HTTPMethodMetadata, HTTPMethod } from "./decorators/HttpMethods";
+import { RequestParamMetadata } from "./decorators/Param";
+import bodyParser from "body-parser";
+import { plainToClass, ClassTransformer } from "class-transformer";
+import { validateOrReject } from "class-validator";
 
 interface Options {
   app: express.Application;
@@ -17,6 +21,7 @@ class Application {
     private readonly controllers: any[]
   ) {
     try {
+      this.initMiddlewares(app);
       this.initControllers(controllers);
     } catch (error) {
       console.error(error);
@@ -24,7 +29,12 @@ class Application {
     }
   }
 
-  initControllers(controllers: any[]) {
+  private initMiddlewares(app: express.Application) {
+    app.use(bodyParser.urlencoded({ extended: false }));
+    app.use(bodyParser.json());
+  }
+
+  private initControllers(controllers: any[]) {
     controllers.map((controller) => {
       const metadata: ControllerMetadata = Reflect.getMetadata(
         MetadataKeys.controller,
@@ -38,15 +48,15 @@ class Application {
     });
   }
 
-  initRoutes(controller: any, metadata: ControllerMetadata) {
+  private initRoutes(controller: any, metadata: ControllerMetadata) {
     const router = express.Router(metadata.options);
     const arrHttpMethodMetada: HTTPMethodMetadata[] =
       Reflect.getMetadata(MetadataKeys.httpMethod, controller) ?? [];
 
-    const object = new controller();
+    Container.set(controller, new controller());
 
     arrHttpMethodMetada.map((mehtodMetadata) => {
-      const handler = this.initRequestHandler(object, mehtodMetadata);
+      const handler = this.initRequestHandler(controller, mehtodMetadata);
       const middlewares = [
         ...metadata.middlewares,
         ...mehtodMetadata.middlewares,
@@ -89,14 +99,72 @@ class Application {
     this.app.use(metadata.path, router);
   }
 
-  initRequestHandler(controller: any, metadata: HTTPMethodMetadata) {
+  private initRequestHandler(controller: any, metadata: HTTPMethodMetadata) {
     return async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const response = await controller[metadata.propertyKey](req, res, next);
-        if (response && response.finished) {
-          return response;
+        const _controller: any = Container.get(controller);
+        const _method = _controller[metadata.propertyKey];
+
+        let arrParamMetada: RequestParamMetadata[] =
+          Reflect.getOwnMetadata(
+            MetadataKeys.param,
+            controller,
+            metadata.propertyKey
+          ) || [];
+
+        let args: any[] = [];
+
+        if (arrParamMetada) {
+          const argsPromise = arrParamMetada.map((meta) => {
+            switch (meta.paramType) {
+              case "body":
+                const body = req.body;
+
+                // let object: object;
+                // if (typeof body === "string") {
+                //   object = JSON.parse(body);
+                // } else if (body != null && typeof body === "object") {
+                //   object = body;
+                // } else {
+                //   Promise.reject(
+                //     new Error(
+                //       "Incorrect object param type! Only string, plain object and array of plain objects are valid."
+                //     )
+                //   );
+                // }
+
+                // const classObject: any = plainToClass(
+                //   meta.type,
+                //   object,
+                //   meta.classTransform ? meta.classTransform : void 0
+                // );
+
+                // if (Array.isArray(classObject)) {
+                Promise.reject(new Error(`unimplemented`));
+                // } else {
+                //   return validateOrReject(classObject, meta.validatorOptions);
+                // }
+
+                // console.log(meta.index, classObject);
+                // args[meta.index] = classObject;
+
+                break;
+              default:
+                Promise.reject(new Error(`${meta.paramType} not found`));
+
+                break;
+            }
+          });
         }
-        res.send(response);
+
+        console.log(args);
+
+        const result = await _method(...args); //_method(req, res, next, ...args);
+        // const result = await controller[metadata.propertyKey](req, res, next);
+        if (result && result.finished) {
+          return result;
+        }
+        res.send(result);
         next();
         return;
       } catch (error) {

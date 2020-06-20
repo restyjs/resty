@@ -1,17 +1,41 @@
+import "reflect-metadata";
 import resty, {
   Controller,
   Get,
   Request,
   Response,
   NextFunction,
+  Post,
+  Body,
+  Put,
 } from "../src";
-import { Post } from "../src/decorators/HttpMethods";
+
+import { IsString } from "class-validator";
+
+class PostDTO {
+  @IsString()
+  title!: string;
+
+  @IsString()
+  content!: string;
+}
 
 @Controller("/")
 class HelloController {
   @Get("/")
   index() {
     return "Hello World";
+  }
+
+  @Post("/")
+  async create(@Body() body: PostDTO) {
+    console.log(body);
+    return { status: "ok" };
+  }
+
+  @Put("/")
+  async update(@Body() body: PostDTO) {
+    return { status: "ok" };
   }
 
   @Get("/rest")
@@ -26,6 +50,7 @@ class HelloController {
 
   @Get("/health")
   health(req: Request, res: Response, next: NextFunction) {
+    console.log(res);
     return res.json({ status: "ok" }).status(200);
   }
 
