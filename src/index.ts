@@ -17,4 +17,6 @@ export { Body } from "./decorators/Body";
 
 export { Request, Response, NextFunction };
 
+export { Context } from "./context";
+
 export default resty;

@@ -1,14 +1,15 @@
 import "reflect-metadata";
-import express, { Request, Response, NextFunction } from "express";
+import express from "express";
+import bodyParser from "body-parser";
+
 import { Container } from "typedi";
-import { MetadataKeys } from "./metadataKeys";
 import { exit } from "process";
+
+import { MetadataKeys } from "./metadataKeys";
 import { ControllerMetadata } from "./decorators/Controller";
 import { HTTPMethodMetadata, HTTPMethod } from "./decorators/HttpMethods";
-import { RequestParamMetadata } from "./decorators/Param";
-import bodyParser from "body-parser";
-import { plainToClass, ClassTransformer } from "class-transformer";
-import { validateOrReject } from "class-validator";
+import { RequestParamMetadata, transformAndValidate } from "./decorators/Param";
+import { Context } from "./context";
 
 interface Options {
   app: express.Application;
@@ -100,7 +101,11 @@ class Application {
   }
 
   private initRequestHandler(controller: any, metadata: HTTPMethodMetadata) {
-    return async (req: Request, res: Response, next: NextFunction) => {
+    return async (
+      req: express.Request,
+      res: express.Response,
+      next: express.NextFunction
+    ) => {
       try {
         const _controller: any = Container.get(controller);
         const _method = _controller[metadata.propertyKey];
@@ -114,57 +119,35 @@ class Application {
 
         let args: any[] = [];
 
-        if (arrParamMetada) {
-          const argsPromise = arrParamMetada.map((meta) => {
-            switch (meta.paramType) {
-              case "body":
-                const body = req.body;
+        await Promise.all(
+          arrParamMetada.map(async (paramMetadata) => {
+            args[paramMetadata.index] = await transformAndValidate(
+              paramMetadata.type,
+              req.body,
+              {
+                transformer: paramMetadata.classTransform
+                  ? paramMetadata.classTransform
+                  : void 0,
+                validator: paramMetadata.validatorOptions,
+              }
+            );
+          })
+        );
 
-                // let object: object;
-                // if (typeof body === "string") {
-                //   object = JSON.parse(body);
-                // } else if (body != null && typeof body === "object") {
-                //   object = body;
-                // } else {
-                //   Promise.reject(
-                //     new Error(
-                //       "Incorrect object param type! Only string, plain object and array of plain objects are valid."
-                //     )
-                //   );
-                // }
+        metadata.arguments.map((arg, index) => {
+          if (arg.name == "Context") {
+            const ctx = new Context(req, res, next);
+            args[index] = ctx;
+          }
+        });
 
-                // const classObject: any = plainToClass(
-                //   meta.type,
-                //   object,
-                //   meta.classTransform ? meta.classTransform : void 0
-                // );
+        const result = await _method(...args);
 
-                // if (Array.isArray(classObject)) {
-                Promise.reject(new Error(`unimplemented`));
-                // } else {
-                //   return validateOrReject(classObject, meta.validatorOptions);
-                // }
-
-                // console.log(meta.index, classObject);
-                // args[meta.index] = classObject;
-
-                break;
-              default:
-                Promise.reject(new Error(`${meta.paramType} not found`));
-
-                break;
-            }
-          });
-        }
-
-        console.log(args);
-
-        const result = await _method(...args); //_method(req, res, next, ...args);
-        // const result = await controller[metadata.propertyKey](req, res, next);
         if (result && result.finished) {
           return result;
         }
         res.send(result);
+
         next();
         return;
       } catch (error) {

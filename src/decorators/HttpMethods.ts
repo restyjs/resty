@@ -16,6 +16,7 @@ export interface HTTPMethodMetadata {
   method: HTTPMethod;
   middlewares: express.RequestHandler[];
   propertyKey: string;
+  arguments: any[];
 }
 
 function httpMethod(
@@ -36,6 +37,7 @@ function httpMethod(
       method,
       middlewares,
       propertyKey,
+      arguments: Reflect.getMetadata("design:paramtypes", target, propertyKey),
     };
 
     arrHttpMethodMetada.push(metadata);
