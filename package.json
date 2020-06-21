@@ -10,8 +10,7 @@
   "license": "MIT",
   "private": false,
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/",
-    "access": "public"
+    "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
     "@types/jest": "^26.0.0",
