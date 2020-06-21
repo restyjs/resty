@@ -54,9 +54,5 @@
     "typescript",
     "dependency-injection",
     "controllers"
-  ],
-  "np": {
-    "yarn": false,
-    "contents": "dist"
-  }
+  ]
 }
