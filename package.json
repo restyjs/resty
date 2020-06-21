@@ -58,5 +58,8 @@
   "np": {
     "yarn": true,
     "contents": "dist"
-  }
+  },
+  "files": [
+    "dist/**/*"
+  ]
 }
