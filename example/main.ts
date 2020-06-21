@@ -30,10 +30,11 @@ class HelloController {
     return "Hello World";
   }
 
-  @Get("/sample")
-  sample(@Query("token") token: string) {
+  @Get("/search")
+  search(@Query("name") name: string, @Query("email") email: string) {
     return {
-      token,
+      name,
+      email,
     };
   }
 
