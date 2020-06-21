@@ -1,14 +1,16 @@
 {
-  "name": "resty",
-  "version": "0.0.1",
+  "name": "@restyjs/core",
+  "version": "0.0.1-alpha.1",
   "description": "A Node.js framework",
-  "main": "dist",
+  "homepage": "https://restyjs.com",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "repository": "https://github.com/restyjs/resty",
   "author": "Satish Babariya",
   "license": "MIT",
   "private": false,
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
+    "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
     "@types/jest": "^26.0.0",
@@ -43,5 +45,18 @@
       "/node_modules/",
       "/dist/"
     ]
+  },
+  "keywords": [
+    "express",
+    "express.js",
+    "typescript",
+    "typescript-express",
+    "typescript",
+    "dependency-injection",
+    "controllers"
+  ],
+  "np": {
+    "yarn": true,
+    "contents": "dist"
   }
 }
