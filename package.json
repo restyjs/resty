@@ -56,7 +56,7 @@
     "controllers"
   ],
   "np": {
-    "yarn": true,
+    "yarn": false,
     "contents": "dist"
   },
   "files": [
