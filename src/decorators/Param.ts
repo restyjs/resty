@@ -1,5 +1,7 @@
-import { ValidatorOptions, validate, validateOrReject } from "class-validator";
-import { ClassTransformOptions, plainToClass } from "class-transformer";
+import { ValidatorOptions } from "class-validator";
+import { ClassTransformOptions } from "class-transformer";
+import { MetadataKeys } from "../metadataKeys";
+import { BodyOptions } from "./Body";
 
 export type RequestParamType =
   | "body"
@@ -27,7 +29,7 @@ export interface RequestParamMetadata {
   type: any;
   name?: string;
   parse: boolean;
-  required: boolean;
+  required?: boolean;
   transform?: (
     value?: any,
     request?: any,
@@ -40,54 +42,34 @@ export interface RequestParamMetadata {
   explicitType?: any;
 }
 
-export type ClassType<T> = new (...args: any[]) => T;
+export function Param(paramName: string) {
+  return function (target: Object, propertyKey: string, index: number) {
+    let arrParamMetada: RequestParamMetadata[] =
+      Reflect.getOwnMetadata(
+        MetadataKeys.param,
+        target.constructor,
+        propertyKey
+      ) || [];
 
-export interface TransformValidationOptions {
-  validator?: ValidatorOptions;
-  transformer?: ClassTransformOptions;
-}
+    const metadata: RequestParamMetadata = {
+      target,
+      paramType: "param",
+      name: paramName,
+      propertyKey,
+      index,
+      type: Reflect.getMetadata("design:paramtypes", target, propertyKey)[
+        index
+      ],
+      parse: false,
+    };
 
-export function transformAndValidate<T extends object>(
-  classType: ClassType<T>,
-  somethingToTransform: string | object | object[],
-  options?: TransformValidationOptions
-): Promise<T> {
-  return new Promise((resolve, reject) => {
-    let object: object;
-    if (typeof somethingToTransform === "string") {
-      object = JSON.parse(somethingToTransform);
-    } else if (
-      somethingToTransform != null &&
-      typeof somethingToTransform === "object"
-    ) {
-      object = somethingToTransform;
-    } else {
-      return reject(
-        new Error(
-          "Incorrect object param type! Only string, plain object and array of plain objects are valid."
-        )
-      );
-    }
+    arrParamMetada.push(metadata);
 
-    const classObject = plainToClass(
-      classType,
-      object,
-      options ? options.transformer : void 0
+    Reflect.defineMetadata(
+      MetadataKeys.param,
+      arrParamMetada,
+      target.constructor,
+      propertyKey
     );
-    if (Array.isArray(classObject)) {
-      Promise.all(
-        classObject.map((objectElement) =>
-          validate(objectElement, options ? options.validator : void 0)
-        )
-      ).then((errors) =>
-        errors.every((error) => error.length === 0)
-          ? resolve(classObject)
-          : reject(errors)
-      );
-    } else {
-      validateOrReject(classObject, options ? options.validator : void 0)
-        .then(() => resolve(classObject))
-        .catch(reject);
-    }
-  });
+  };
 }

@@ -8,8 +8,9 @@ import { exit } from "process";
 import { MetadataKeys } from "./metadataKeys";
 import { ControllerMetadata } from "./decorators/Controller";
 import { HTTPMethodMetadata, HTTPMethod } from "./decorators/HttpMethods";
-import { RequestParamMetadata, transformAndValidate } from "./decorators/Param";
+import { RequestParamMetadata } from "./decorators/Param";
 import { Context } from "./context";
+import { transformAndValidate } from "./helpers/transformAndValidate";
 
 interface Options {
   app: express.Application;
@@ -121,16 +122,25 @@ class Application {
 
         await Promise.all(
           arrParamMetada.map(async (paramMetadata) => {
-            args[paramMetadata.index] = await transformAndValidate(
-              paramMetadata.type,
-              req.body,
-              {
-                transformer: paramMetadata.classTransform
-                  ? paramMetadata.classTransform
-                  : void 0,
-                validator: paramMetadata.validatorOptions,
-              }
-            );
+            switch (paramMetadata.paramType) {
+              case "body":
+                args[paramMetadata.index] = await transformAndValidate(
+                  paramMetadata.type,
+                  req.body,
+                  {
+                    transformer: paramMetadata.classTransform
+                      ? paramMetadata.classTransform
+                      : void 0,
+                    validator: paramMetadata.validatorOptions,
+                  }
+                );
+                break;
+              case "param":
+                if (paramMetadata.name) {
+                  args[paramMetadata.index] = req.params[paramMetadata.name];
+                }
+                break;
+            }
           })
         );
 

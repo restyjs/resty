@@ -12,6 +12,7 @@ import resty, {
 } from "../src";
 
 import { IsString } from "class-validator";
+import { Param } from "../src/decorators/Param";
 
 class PostDTO {
   @IsString()
@@ -28,14 +29,21 @@ class HelloController {
     return "Hello World";
   }
 
+  @Get("/:id")
+  getByID(@Param("id") id: string) {
+    return {
+      id: id,
+    };
+  }
+
   @Post("/")
-  async create(@Body() body: PostDTO) {
+  async create(ctx: Context, @Body() body: PostDTO) {
     return { body: body };
   }
 
   @Put("/")
-  async update(@Body() body: PostDTO) {
-    return { body: body };
+  async update(@Body() body: PostDTO, ctx: Context) {
+    return ctx.res.json({ body: body }).status(200);
   }
 
   @Get("/rest")
@@ -61,6 +69,12 @@ class HelloController {
 
 const app = resty({
   controllers: [HelloController],
+});
+
+// 404 Hanler
+app.use((req, res, next) => {
+  const error: Error = new Error("Not Found");
+  next(error);
 });
 
 // Error Hendler
