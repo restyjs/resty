@@ -12,9 +12,11 @@ import resty, {
   Param,
   Query,
   ValidationError,
+  HTTPError,
 } from "../src";
 
 import { IsString } from "class-validator";
+import { error } from "console";
 
 class PostDTO {
   @IsString()
@@ -79,31 +81,6 @@ class HelloController {
 
 const app = resty({
   controllers: [HelloController],
-});
-
-// 404 Hanler
-app.use((req, res, next) => {
-  const error: Error = new Error("Not Found");
-  next(error);
-});
-
-// Error Hendler
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  if (err) {
-    if (err instanceof ValidationError) {
-      res.status(400);
-      res.json({
-        message: err.message,
-        errors: err.errors,
-      });
-      return;
-    }
-
-    res.status(500);
-    res.json({
-      error: err.message ? err.message : err,
-    });
-  }
 });
 
 app.listen(8080);

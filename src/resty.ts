@@ -11,34 +11,59 @@ import { HTTPMethodMetadata, HTTPMethod } from "./decorators/HttpMethods";
 import { RequestParamMetadata } from "./decorators/Param";
 import { Context } from "./context";
 import { transformAndValidate } from "./helpers/transformAndValidate";
-import { ValidationError } from "./errors";
+import { ValidationError, HTTPError } from "./errors";
 
 interface Options {
-  app: express.Application;
+  app?: express.Application;
   controllers: any[];
+  middlewares?: express.RequestHandler[];
+  postMiddlewares?: express.RequestHandler[];
+  bodyParser?: boolean;
+  handleErrors?: boolean;
 }
 
 class Application {
   constructor(
     private readonly app: express.Application,
-    private readonly controllers: any[]
+    private readonly controllers: any[],
+    private readonly middlewares?: express.RequestHandler[],
+    private readonly postMiddlewares?: express.RequestHandler[],
+    private readonly bodyParser?: boolean,
+    private readonly handleErrors?: boolean
   ) {
     try {
-      this.initMiddlewares(app);
-      this.initControllers(controllers);
+      this.initBodyParser(bodyParser);
+      this.initPreMiddlewares();
+      this.initControllers();
+      this.initPostMiddlewares();
+      this.initErrorHandlers();
     } catch (error) {
       console.error(error);
       exit(1);
     }
   }
 
-  private initMiddlewares(app: express.Application) {
-    app.use(bodyParser.urlencoded({ extended: false }));
-    app.use(bodyParser.json());
+  private initBodyParser(enabled: boolean = true) {
+    if (enabled) {
+      this.app.use(bodyParser.urlencoded({ extended: false }));
+      this.app.use(bodyParser.json());
+    }
   }
 
-  private initControllers(controllers: any[]) {
-    controllers.map((controller) => {
+  private initPreMiddlewares() {
+    if (this.middlewares) {
+      this.middlewares.forEach((middleware) => this.app.use(middleware));
+    }
+  }
+
+  private initPostMiddlewares() {
+    if (this.postMiddlewares) {
+      this.postMiddlewares.forEach((middleware) => this.app.use(middleware));
+    }
+  }
+
+  private initControllers() {
+    this.controllers.map((controller) => {
       const metadata: ControllerMetadata = Reflect.getMetadata(
         MetadataKeys.controller,
         controller
@@ -167,22 +192,56 @@ class Application {
           return result;
         }
         return res.send(result);
-
-        // next();
-        // return;
       } catch (error) {
         next(error);
         return;
       }
     };
   }
+
+  private initErrorHandlers() {
+    if (this.handleErrors) {
+      this.app.use((req, res, next) => {
+        const error: Error = new HTTPError("Not Found", 404);
+        next(error);
+      });
+
+      this.app.use(
+        (
+          err: Error,
+          req: express.Request,
+          res: express.Response,
+          next: express.NextFunction
+        ) => {
+          if (err instanceof ValidationError) {
+            res.status(400);
+            res.json({
+              error: err,
+            });
+            return;
+          } else if (err instanceof HTTPError) {
+            res.status(err.statusCode);
+            res.json(err);
+            return;
+          }
+
+          res.status(500);
+          res.json(err);
+        }
+      );
+    }
+  }
 }
 
-export function resty(options: Partial<Options>): express.Application {
+export function resty(options: Options): express.Application {
   const expressApplication = options.app ?? express();
   const restyApplication = new Application(
     expressApplication,
-    options.controllers ?? []
+    options.controllers ?? [],
+    options.middlewares,
+    options.postMiddlewares,
+    options.bodyParser,
+    options.handleErrors ?? true
   );
   Container.set("resty:application", restyApplication);
   return expressApplication;

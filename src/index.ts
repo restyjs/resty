@@ -17,6 +17,6 @@ export { Query } from "./decorators/Query";
 export { Param } from "./decorators/Param";
 export { Request, Response, NextFunction };
 export { Context } from "./context";
-export { ValidationError } from "./errors";
+export { ValidationError, HTTPError } from "./errors";
 
 export default resty;

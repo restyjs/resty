@@ -1,17 +1,26 @@
-import { error } from "console";
+export class HTTPError extends Error {
+  statusCode: number;
 
-export class ValidationError extends Error {
+  constructor(message: string, statusCode?: number) {
+    super();
+    this.statusCode = statusCode ?? 500;
+    this.message = message;
+  }
+}
+
+export class ValidationError extends HTTPError {
   errors: Object;
 
   constructor(errors: object) {
-    super();
-    this.errors = errors;
-
+    var message = "Bad Request";
     if (Array.isArray(errors)) {
-      this.message = [
+      message = [
         "failed to validate",
         errors.map((error) => error.property).join(", "),
       ].join(" ");
     }
+    super(message);
+    this.statusCode = 400;
+    this.errors = errors;
   }
 }
