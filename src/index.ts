@@ -14,6 +14,8 @@ export {
   HTTPMethodMetadata,
 } from "./decorators/HttpMethods";
 export { Body } from "./decorators/Body";
+export { Query } from "./decorators/Query";
+export { Param } from "./decorators/Param";
 
 export { Request, Response, NextFunction };
 

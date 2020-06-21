@@ -9,10 +9,11 @@ import resty, {
   Body,
   Put,
   Context,
+  Param,
+  Query,
 } from "../src";
 
 import { IsString } from "class-validator";
-import { Param } from "../src/decorators/Param";
 
 class PostDTO {
   @IsString()
@@ -29,10 +30,10 @@ class HelloController {
     return "Hello World";
   }
 
-  @Get("/:id")
-  getByID(@Param("id") id: string) {
+  @Get("/sample")
+  sample(@Query("token") token: string) {
     return {
-      id: id,
+      token,
     };
   }
 
@@ -65,6 +66,13 @@ class HelloController {
   postHealth(ctx: Context) {
     return ctx.res.json({ status: "ok" }).status(200);
   }
+
+  @Get("/:id")
+  getByID(@Param("id") id: string) {
+    return {
+      id: id,
+    };
+  }
 }
 
 const app = resty({
@@ -79,10 +87,12 @@ app.use((req, res, next) => {
 
 // Error Hendler
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  res.status(500);
-  res.json({
-    error: err.message ? err.message : err,
-  });
+  if (err) {
+    res.status(500);
+    res.json({
+      error: err.message ? err.message : err,
+    });
+  }
 });
 
 app.listen(8080);

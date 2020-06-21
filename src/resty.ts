@@ -140,6 +140,11 @@ class Application {
                   args[paramMetadata.index] = req.params[paramMetadata.name];
                 }
                 break;
+              case "query":
+                if (paramMetadata.name) {
+                  args[paramMetadata.index] = req.query[paramMetadata.name];
+                }
+                break;
             }
           })
         );
@@ -156,11 +161,12 @@ class Application {
         if (result && result.finished) {
           return result;
         }
-        res.send(result);
+        return res.send(result);
 
-        next();
-        return;
+        // next();
+        // return;
       } catch (error) {
+        console.log(error);
         next(error);
         return;
       }
