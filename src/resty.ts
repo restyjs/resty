@@ -11,6 +11,7 @@ import { HTTPMethodMetadata, HTTPMethod } from "./decorators/HttpMethods";
 import { RequestParamMetadata } from "./decorators/Param";
 import { Context } from "./context";
 import { transformAndValidate } from "./helpers/transformAndValidate";
+import { ValidationError } from "./errors";
 
 interface Options {
   app: express.Application;
@@ -124,16 +125,20 @@ class Application {
           arrParamMetada.map(async (paramMetadata) => {
             switch (paramMetadata.paramType) {
               case "body":
-                args[paramMetadata.index] = await transformAndValidate(
-                  paramMetadata.type,
-                  req.body,
-                  {
-                    transformer: paramMetadata.classTransform
-                      ? paramMetadata.classTransform
-                      : void 0,
-                    validator: paramMetadata.validatorOptions,
-                  }
-                );
+                try {
+                  args[paramMetadata.index] = await transformAndValidate(
+                    paramMetadata.type,
+                    req.body,
+                    {
+                      transformer: paramMetadata.classTransform
+                        ? paramMetadata.classTransform
+                        : void 0,
+                      validator: paramMetadata.validatorOptions,
+                    }
+                  );
+                } catch (error) {
+                  throw new ValidationError(error);
+                }
                 break;
               case "param":
                 if (paramMetadata.name) {
@@ -166,7 +171,6 @@ class Application {
         // next();
         // return;
       } catch (error) {
-        console.log(error);
         next(error);
         return;
       }

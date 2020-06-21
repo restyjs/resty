@@ -11,6 +11,7 @@ import resty, {
   Context,
   Param,
   Query,
+  ValidationError,
 } from "../src";
 
 import { IsString } from "class-validator";
@@ -89,6 +90,15 @@ app.use((req, res, next) => {
 // Error Hendler
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   if (err) {
+    if (err instanceof ValidationError) {
+      res.status(400);
+      res.json({
+        message: err.message,
+        errors: err.errors,
+      });
+      return;
+    }
+
     res.status(500);
     res.json({
       error: err.message ? err.message : err,
