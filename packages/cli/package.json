@@ -1,0 +1,25 @@
+{
+  "name": "@restyjs/cli",
+  "version": "0.0.1-alpha.3",
+  "description": "A Node.js framework",
+  "homepage": "https://restyjs.com",
+  "main": "lib/index.js",
+  "repository": "https://github.com/restyjs/resty",
+  "author": "Satish Babariya",
+  "license": "MIT",
+  "keywords": [
+    "express",
+    "express.js",
+    "typescript",
+    "typescript-express",
+    "typescript",
+    "dependency-injection",
+    "controllers",
+    "cli",
+    "restyjs",
+    "resty"
+  ],
+  "engines": {
+    "node": ">=8.0.0"
+  }
+}
