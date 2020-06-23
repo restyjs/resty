@@ -13,6 +13,12 @@ export function Controller(
   options?: express.RouterOptions
 ) {
   return function (target: any) {
+
+    // Append / if not exist in path
+    if (!path.startsWith('/')) {
+      path = '/' + path;
+    }
+
     const metadata: ControllerMetadata = {
       path: path,
       middlewares: middlewares,

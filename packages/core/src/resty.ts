@@ -15,21 +15,25 @@ import { ValidationError, HTTPError } from "./errors";
 
 interface Options {
   app?: express.Application;
+  router?: express.Router;
   controllers: any[];
   middlewares?: express.RequestHandler[];
   postMiddlewares?: express.RequestHandler[];
   bodyParser?: boolean;
   handleErrors?: boolean;
+  routePrefix?: string;
 }
 
 class Application {
   constructor(
     private readonly app: express.Application,
+    private readonly router: express.Router,
     private readonly controllers: any[],
     private readonly middlewares?: express.RequestHandler[],
     private readonly postMiddlewares?: express.RequestHandler[],
     private readonly bodyParser?: boolean,
-    private readonly handleErrors?: boolean
+    private readonly handleErrors?: boolean,
+    private readonly routePrefix?: string
   ) {
     try {
       this.initBodyParser(bodyParser);
@@ -74,10 +78,21 @@ class Application {
       }
       this.initRoutes(controller, metadata);
     });
+
+    if (this.routePrefix) {
+      let routePrefix = this.routePrefix;
+      // Append / if not exist in path
+      if (!routePrefix.startsWith('/')) {
+        routePrefix = '/' + routePrefix;
+      }
+      this.app.use(routePrefix, this.router)
+    } else {
+      this.app.use(this.router)
+    }
   }
 
   private initRoutes(controller: any, metadata: ControllerMetadata) {
-    const router = express.Router(metadata.options);
+    const _router = express.Router(metadata.options);
     const arrHttpMethodMetada: HTTPMethodMetadata[] =
       Reflect.getMetadata(MetadataKeys.httpMethod, controller) ?? [];
 
@@ -91,31 +106,31 @@ class Application {
       ];
       switch (mehtodMetadata.method) {
         case HTTPMethod.get:
-          router.get(mehtodMetadata.path, middlewares, handler);
+          _router.get(mehtodMetadata.path, middlewares, handler);
           break;
 
         case HTTPMethod.post:
-          router.post(mehtodMetadata.path, middlewares, handler);
+          _router.post(mehtodMetadata.path, middlewares, handler);
           break;
 
         case HTTPMethod.put:
-          router.put(mehtodMetadata.path, middlewares, handler);
+          _router.put(mehtodMetadata.path, middlewares, handler);
           break;
 
         case HTTPMethod.delete:
-          router.delete(mehtodMetadata.path, middlewares, handler);
+          _router.delete(mehtodMetadata.path, middlewares, handler);
           break;
 
         case HTTPMethod.patch:
-          router.patch(mehtodMetadata.path, middlewares, handler);
+          _router.patch(mehtodMetadata.path, middlewares, handler);
           break;
 
         case HTTPMethod.options:
-          router.options(mehtodMetadata.path, middlewares, handler);
+          _router.options(mehtodMetadata.path, middlewares, handler);
           break;
 
         case HTTPMethod.head:
-          router.head(mehtodMetadata.path, middlewares, handler);
+          _router.head(mehtodMetadata.path, middlewares, handler);
           break;
 
         default:
@@ -124,7 +139,8 @@ class Application {
       }
     });
 
-    this.app.use(metadata.path, router);
+    // this.app.use(metadata.path, _router);
+    this.router.use(metadata.path, _router);
   }
 
   private initRequestHandler(controller: any, metadata: HTTPMethodMetadata) {
@@ -237,11 +253,13 @@ export function resty(options: Options): express.Application {
   const expressApplication = options.app ?? express();
   const restyApplication = new Application(
     expressApplication,
+    options.router ?? express.Router(),
     options.controllers ?? [],
     options.middlewares,
     options.postMiddlewares,
     options.bodyParser,
-    options.handleErrors ?? true
+    options.handleErrors ?? true,
+    options.routePrefix
   );
   Container.set("resty:application", restyApplication);
   return expressApplication;
