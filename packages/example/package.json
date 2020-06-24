@@ -4,6 +4,13 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "@resty/core": "file:../core"
+    "@resty/core": "file:../core",
+    "@resty/typeorm": "file:../typeorm",
+    "@types/cors": "^2.8.6",
+    "@types/helmet": "^0.0.47",
+    "cors": "^2.8.5",
+    "helmet": "^3.23.2",
+    "pg": "^8.2.1",
+    "sqlite3": "^4.2.0"
   }
 }

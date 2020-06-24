@@ -4,6 +4,7 @@
   "description": "A Node.js framework",
   "homepage": "https://restyjs.com",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "repository": "https://github.com/restyjs/resty",
   "author": "Satish Babariya",
   "license": "MIT",
