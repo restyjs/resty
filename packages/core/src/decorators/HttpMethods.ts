@@ -32,6 +32,11 @@ function httpMethod(
     var arrHttpMethodMetada: HTTPMethodMetadata[] =
       Reflect.getMetadata(MetadataKeys.httpMethod, target.constructor) ?? [];
 
+    // Append / if not exist in path
+    if (!path.startsWith('/')) {
+      path = '/' + path;
+    }
+
     const metadata: HTTPMethodMetadata = {
       path,
       method,

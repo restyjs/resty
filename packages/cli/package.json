@@ -1,0 +1,39 @@
+{
+  "name": "@restyjs/cli",
+  "version": "0.0.1-alpha.3",
+  "description": "A Node.js framework",
+  "homepage": "https://restyjs.com",
+  "main": "dist/index.js",
+  "repository": "https://github.com/restyjs/resty",
+  "author": "Satish Babariya",
+  "license": "MIT",
+  "keywords": [
+    "express",
+    "express.js",
+    "typescript",
+    "typescript-express",
+    "typescript",
+    "dependency-injection",
+    "controllers",
+    "cli",
+    "restyjs",
+    "resty"
+  ],
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "devDependencies": {
+    "@types/yargs": "^15.0.5"
+  },
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "yargs": "^15.3.1",
+    "yargs-parser": "^18.1.3"
+  },
+  "scripts": {
+    "build": "tsc --build"
+  },
+  "np": {
+    "contents": "dist"
+  }
+}
