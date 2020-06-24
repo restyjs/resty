@@ -19,6 +19,7 @@ export { Query } from "./decorators/Query";
 export { Param } from "./decorators/Param";
 export { Context } from "./context";
 export { ValidationError, HTTPError } from "./errors";
+export { Provider } from "./provider";
 
 export { Request, Response, NextFunction };
 export { Service, Container, Inject };

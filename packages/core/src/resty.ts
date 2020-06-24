@@ -12,14 +12,17 @@ import { RequestParamMetadata } from "./decorators/Param";
 import { Context } from "./context";
 import { transformAndValidate } from "./helpers/transformAndValidate";
 import { ValidationError, HTTPError } from "./errors";
+import { Provider } from "./provider";
 
 interface Options {
   app?: express.Application;
   router?: express.Router;
   controllers: any[];
+  providers?: Provider[];
   middlewares?: express.RequestHandler[];
   postMiddlewares?: express.RequestHandler[];
   bodyParser?: boolean;
+  trustProxy?: boolean;
   handleErrors?: boolean;
   routePrefix?: string;
 }
@@ -29,21 +32,32 @@ class Application {
     private readonly app: express.Application,
     private readonly router: express.Router,
     private readonly controllers: any[],
+    private readonly providers: Provider[],
     private readonly middlewares?: express.RequestHandler[],
     private readonly postMiddlewares?: express.RequestHandler[],
     private readonly bodyParser?: boolean,
+    private readonly trustProxy?: boolean,
     private readonly handleErrors?: boolean,
     private readonly routePrefix?: string
   ) {
     try {
+      this.initTrustProxy(trustProxy);
       this.initBodyParser(bodyParser);
       this.initPreMiddlewares();
       this.initControllers();
       this.initPostMiddlewares();
       this.initErrorHandlers();
+
+      this.initProviders();
     } catch (error) {
       console.error(error);
       exit(1);
+    }
+  }
+
+  private initTrustProxy(enabled: boolean = false) {
+    if (enabled) {
+      this.app.enable("trust proxy");
     }
   }
 
@@ -82,12 +96,12 @@ class Application {
     if (this.routePrefix) {
       let routePrefix = this.routePrefix;
       // Append / if not exist in path
-      if (!routePrefix.startsWith('/')) {
-        routePrefix = '/' + routePrefix;
+      if (!routePrefix.startsWith("/")) {
+        routePrefix = "/" + routePrefix;
       }
-      this.app.use(routePrefix, this.router)
+      this.app.use(routePrefix, this.router);
     } else {
-      this.app.use(this.router)
+      this.app.use(this.router);
     }
   }
 
@@ -247,6 +261,21 @@ class Application {
       );
     }
   }
+
+  initProviders = async () => {
+    this.providers.map(async (provider) => {
+      try {
+        await provider.build();
+      } catch (error) {
+        if (provider.optional) {
+          throw error;
+        } else {
+          console.error(error);
+          exit(1);
+        }
+      }
+    });
+  };
 }
 
 export function resty(options: Options): express.Application {
@@ -255,9 +284,11 @@ export function resty(options: Options): express.Application {
     expressApplication,
     options.router ?? express.Router(),
     options.controllers ?? [],
+    options.providers ?? [],
     options.middlewares,
     options.postMiddlewares,
     options.bodyParser,
+    options.trustProxy,
     options.handleErrors ?? true,
     options.routePrefix
   );

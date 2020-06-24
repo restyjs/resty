@@ -4,6 +4,7 @@
   "description": "A Node.js framework",
   "homepage": "https://restyjs.com",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "repository": "https://github.com/restyjs/resty",
   "author": "Satish Babariya",
   "license": "MIT",
@@ -42,6 +43,7 @@
     "contents": "dist"
   },
   "dependencies": {
+    "@restyjs/core": "file:../core",
     "typedi": "^0.8.0",
     "typeorm": "^0.2.25",
     "typeorm-typedi-extensions": "^0.2.3"
