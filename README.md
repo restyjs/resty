@@ -3,7 +3,6 @@
 <p align="center">A Node.js framework</p>
 </p>
 
-### Quick Start
 
 ```sh
 npm i @restyjs/core
