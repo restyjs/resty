@@ -1,6 +1,6 @@
 {
   "name": "@restyjs/core",
-  "version": "0.0.1-alpha.4",
+  "version": "0.0.1-alpha.5",
   "description": "A Node.js framework",
   "homepage": "https://restyjs.com",
   "main": "dist/index.js",
