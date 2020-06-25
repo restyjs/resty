@@ -3,7 +3,7 @@ import request from "supertest";
 import * as jwt from "../src";
 
 describe("resty", () => {
-  it("test resty app with @Controller and @Get decorators", async () => {
+  it("test jwt middleware", async () => {
     @Controller("/")
     class HelloController {
       @Get("/", [jwt.ValidateJWT])
