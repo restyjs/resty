@@ -61,3 +61,13 @@ typings/
 .next
 
 dist/
+
+
+# build files
+# source
+**/*.js
+*.js
+
+# definitions
+**/*.d.ts
+*.d.ts
