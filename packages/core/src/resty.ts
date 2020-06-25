@@ -13,6 +13,7 @@ import { Context } from "./context";
 import { transformAndValidate } from "./helpers/transformAndValidate";
 import { ValidationError, HTTPError } from "./errors";
 import { Provider } from "./provider";
+import { Configuration } from "./config";
 
 interface Options {
   app?: express.Application;
@@ -25,6 +26,7 @@ interface Options {
   trustProxy?: boolean;
   handleErrors?: boolean;
   routePrefix?: string;
+  configuration?: Configuration;
 }
 
 class Application {
@@ -33,6 +35,7 @@ class Application {
     private readonly router: express.Router,
     private readonly controllers: any[],
     private readonly providers: Provider[],
+    private readonly configuration: Configuration,
     private readonly middlewares?: express.RequestHandler[],
     private readonly postMiddlewares?: express.RequestHandler[],
     private readonly bodyParser?: boolean,
@@ -41,18 +44,33 @@ class Application {
     private readonly routePrefix?: string
   ) {
     try {
+      // init and load environment variables
+      this.initConfigurations();
+
+      // init middlewares
       this.initTrustProxy(trustProxy);
       this.initBodyParser(bodyParser);
       this.initPreMiddlewares();
+
+      // init routes and controllers
       this.initControllers();
+
+      // init post middlewares
       this.initPostMiddlewares();
+
+      // init error handlers
       this.initErrorHandlers();
 
+      // first init providers
       this.initProviders();
     } catch (error) {
       console.error(error);
       exit(1);
     }
+  }
+
+  private initConfigurations() {
+    this.configuration.initialize();
   }
 
   private initTrustProxy(enabled: boolean = false) {
@@ -280,11 +298,14 @@ class Application {
 
 export function resty(options: Options): express.Application {
   const expressApplication = options.app ?? express();
+  const configuration = options.configuration ?? new Configuration();
+
   const restyApplication = new Application(
     expressApplication,
     options.router ?? express.Router(),
     options.controllers ?? [],
     options.providers ?? [],
+    configuration,
     options.middlewares,
     options.postMiddlewares,
     options.bodyParser,
@@ -292,6 +313,8 @@ export function resty(options: Options): express.Application {
     options.handleErrors ?? true,
     options.routePrefix
   );
+
   Container.set("resty:application", restyApplication);
+
   return expressApplication;
 }

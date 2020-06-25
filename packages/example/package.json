@@ -4,8 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "@resty/core": "file:../core",
-    "@resty/typeorm": "file:../typeorm",
+    "@restyjs/core": "file:../core",
+    "@restyjs/typeorm": "file:../typeorm",
     "@types/cors": "^2.8.6",
     "@types/helmet": "^0.0.47",
     "cors": "^2.8.5",

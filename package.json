@@ -16,12 +16,12 @@
     "rimraf": "^3.0.2"
   },
   "scripts": {
-    "build": "yarn run build:core && yarn run build:typeorm",
+    "build": "yarn run build:core && yarn run build:typeorm && yarn run build:jwt",
     "build:core": "yarn workspace @restyjs/core run build",
     "build:typeorm": "yarn workspace @restyjs/typeorm run build",
-    "release": "",
-    "release:core": "yarn workspace @restyjs/core run",
-    "test": "jest"
+    "build:jwt": "yarn workspace @restyjs/jwt run build",
+    "release:core": "yarn workspace @restyjs/core run np",
+    "test": "JWT_SECRET=secret jest"
   },
   "jest": {
     "preset": "ts-jest",
