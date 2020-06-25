@@ -1,11 +1,13 @@
 # resty.js
 
 
-Fast, opinionated, minimalist and testable web framework built on top of express.js and typescript with decorators.
-
 [![TypeScript](https://img.shields.io/badge/-TypeScript-brightgreen?style=for-the-badge&logo=typescript)](https://github.com/microsoft/TypeScript)
 [![Express](https://img.shields.io/badge/-express.js-blue?style=for-the-badge&logo)](https://github.com/restyjs/resty)
 [![async/await](https://img.shields.io/badge/-async%2Fawait-green?style=for-the-badge&logo)](https://github.com/restyjs/resty)
+
+
+
+Fast, opinionated, minimalist and testable web framework built on top of express.js and typescript with decorators.
 
 
 # Table of Contents
