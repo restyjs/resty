@@ -1,6 +1,6 @@
 {
   "name": "@restyjs/jwt",
-  "version": "0.0.1-alpha.5",
+  "version": "0.0.1-alpha.6",
   "description": "A Node.js framework",
   "homepage": "https://restyjs.com",
   "main": "dist/index.js",
@@ -46,6 +46,6 @@
     "typedi": "^0.8.0"
   },
   "peerDependencies": {
-    "@restyjs/core": "0.0.1-alpha.5"
+    "@restyjs/core": "0.0.1-alpha.6"
   }
 }
