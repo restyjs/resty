@@ -1,6 +1,6 @@
 {
   "name": "@restyjs/typeorm",
-  "version": "0.0.1-alpha.6",
+  "version": "0.0.1-alpha.7",
   "description": "A Node.js framework",
   "homepage": "https://restyjs.com",
   "main": "dist/index.js",
@@ -48,6 +48,6 @@
     "typeorm-typedi-extensions": "^0.2.3"
   },
   "peerDependencies": {
-    "@restyjs/core": "0.0.1-alpha.6"
+    "@restyjs/core": "0.0.1-alpha.7"
   }
 }
