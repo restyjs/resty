@@ -465,7 +465,7 @@
     chalk "^4.0.0"
 
 "@restyjs/core@file:packages/core":
-  version "0.0.1-alpha.3"
+  version "0.0.1-alpha.4"
   dependencies:
     "@types/body-parser" "^1.19.0"
     "@types/dotenv" "^8.2.0"
@@ -481,9 +481,9 @@
     typedi "^0.8.0"
 
 "@restyjs/typeorm@file:packages/typeorm":
-  version "0.0.1-alpha.3"
+  version "0.0.1-alpha.4"
   dependencies:
-    "@restyjs/core" "file:../../Library/Caches/Yarn/v6/npm-@restyjs-typeorm-0.0.1-alpha.3-52659e9c-2873-466a-b20c-04b4d4620078-1593061548367/node_modules/@restyjs/core"
+    "@restyjs/core" "file:packages/core"
     typedi "^0.8.0"
     typeorm "^0.2.25"
     typeorm-typedi-extensions "^0.2.3"
@@ -669,10 +669,10 @@
     "@types/istanbul-lib-coverage" "*"
     "@types/istanbul-lib-report" "*"
 
-"@types/jest@^26.0.1":
-  version "26.0.1"
-  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-26.0.1.tgz#78416d00499c5a9a839b937000483f7647a16cb9"
-  integrity sha512-KumByIAlAh/uczr7WjdKHs5cUWhwOeRnsfjI/T/tQP1xvVBSgnRPAZ8VZjp26pQmE79d+n7X1AuTUu0IWHrfWg==
+"@types/jest@^26.0.3":
+  version "26.0.3"
+  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-26.0.3.tgz#79534e0e94857171c0edc596db0ebe7cb7863251"
+  integrity sha512-v89ga1clpVL/Y1+YI0eIu1VMW+KU7Xl8PhylVtDKVWaSUHBHYPLXMQGBdrpHewaKoTvlXkksbYqPgz8b4cmRZg==
   dependencies:
     jest-diff "^25.2.1"
     pretty-format "^25.2.1"
