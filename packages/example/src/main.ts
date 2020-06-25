@@ -1,5 +1,5 @@
 import resty, { Controller, Get, Context } from "@restyjs/core";
-import { Database } from "@resty/typeorm";
+import { Database } from "@restyjs/typeorm";
 
 import cors from "cors";
 import helmet from "helmet";
