@@ -21,6 +21,8 @@
     "build:typeorm": "yarn workspace @restyjs/typeorm run build",
     "build:jwt": "yarn workspace @restyjs/jwt run build",
     "release:core": "yarn workspace @restyjs/core run np",
+    "release:typeorm": "yarn workspace @restyjs/typeorm run np",
+    "release:jwt": "yarn workspace @restyjs/jwt run np",
     "test": "JWT_SECRET=secret jest"
   },
   "jest": {
