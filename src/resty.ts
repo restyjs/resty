@@ -61,8 +61,9 @@ class Application {
       // init error handlers
       this.initErrorHandlers();
 
-      // first init providers
-      this.initProviders();
+      (async () => {
+        this.initProviders();
+      })();
     } catch (error) {
       console.error(error);
       exit(1);
@@ -287,7 +288,7 @@ class Application {
   initProviders = async () => {
     this.providers.map(async (provider) => {
       try {
-        await provider.build();
+        await provider.build(this.app);
       } catch (error) {
         if (provider.optional) {
           throw error;

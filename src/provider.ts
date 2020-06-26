@@ -1,4 +1,6 @@
+import express from "express";
+
 export interface Provider {
   optional: boolean;
-  build(): void | Promise<any>;
+  build(app?: express.Application): void | Promise<any>;
 }
