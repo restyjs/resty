@@ -6,6 +6,7 @@ import {
   RequestHandler,
   RequestParamHandler,
   Router,
+  Application,
 } from "express";
 import { Service, Container, Inject } from "typedi";
 
@@ -27,7 +28,6 @@ export { Param } from "./decorators/Param";
 export { Context } from "./context";
 export { ValidationError, HTTPError } from "./errors";
 export { Provider } from "./provider";
-export { Configuration, ConfigurationOptions } from "./config";
 
 export {
   Request,
@@ -36,6 +36,7 @@ export {
   RequestHandler,
   RequestParamHandler,
   Router,
+  Application,
 };
 export { Service, Container, Inject };
 

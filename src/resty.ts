@@ -13,7 +13,6 @@ import { Context } from "./context";
 import { transformAndValidate } from "./helpers/transformAndValidate";
 import { ValidationError, HTTPError } from "./errors";
 import { Provider } from "./provider";
-import { Configuration } from "./config";
 
 interface Options {
   app?: express.Application;
@@ -26,7 +25,6 @@ interface Options {
   trustProxy?: boolean;
   handleErrors?: boolean;
   routePrefix?: string;
-  configuration?: Configuration;
 }
 
 class Application {
@@ -35,7 +33,6 @@ class Application {
     private readonly router: express.Router,
     private readonly controllers: any[],
     private readonly providers: Provider[],
-    private readonly configuration: Configuration,
     private readonly middlewares?: express.RequestHandler[],
     private readonly postMiddlewares?: express.RequestHandler[],
     private readonly bodyParser?: boolean,
@@ -44,8 +41,8 @@ class Application {
     private readonly routePrefix?: string
   ) {
     try {
-      // init and load environment variables
-      this.initConfigurations();
+      // first init providers
+      this.initProviders();
 
       // init middlewares
       this.initTrustProxy(trustProxy);
@@ -60,18 +57,10 @@ class Application {
 
       // init error handlers
       this.initErrorHandlers();
-
-      (async () => {
-        this.initProviders();
-      })();
     } catch (error) {
       console.error(error);
       exit(1);
     }
-  }
-
-  private initConfigurations() {
-    this.configuration.initialize();
   }
 
   private initTrustProxy(enabled: boolean = false) {
@@ -285,32 +274,32 @@ class Application {
     }
   }
 
-  initProviders = async () => {
-    this.providers.map(async (provider) => {
-      try {
-        await provider.build(this.app);
-      } catch (error) {
-        if (provider.optional) {
-          throw error;
-        } else {
-          console.error(error);
-          exit(1);
+  initProviders() {
+    (async () => {
+      await this.providers.map(async (provider) => {
+        try {
+          await provider.build();
+        } catch (error) {
+          if (provider.optional) {
+            throw error;
+          } else {
+            console.error(error);
+            exit(1);
+          }
         }
-      }
-    });
-  };
+      });
+    })();
+  }
 }
 
 export function resty(options: Options): express.Application {
   const expressApplication = options.app ?? express();
-  const configuration = options.configuration ?? new Configuration();
 
   const restyApplication = new Application(
     expressApplication,
     options.router ?? express.Router(),
     options.controllers ?? [],
     options.providers ?? [],
-    configuration,
     options.middlewares,
     options.postMiddlewares,
     options.bodyParser,

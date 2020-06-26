@@ -16,6 +16,7 @@ class HelloController {
 const app = resty({
   routePrefix: "/api",
   controllers: [HelloController],
+  providers: [],
 });
 
 app.listen(8080);
