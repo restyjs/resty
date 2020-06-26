@@ -176,9 +176,6 @@ class Application {
       next: express.NextFunction
     ) => {
       try {
-        const _controller: any = Container.get(controller);
-        const _method = _controller[metadata.propertyKey];
-
         let arrParamMetada: RequestParamMetadata[] =
           Reflect.getOwnMetadata(
             MetadataKeys.param,
@@ -228,7 +225,8 @@ class Application {
           }
         });
 
-        const result = await _method(...args);
+        const _controller: any = Container.get(controller);
+        const result = await _controller[metadata.propertyKey](...args);
 
         if (result && result.finished) {
           return result;

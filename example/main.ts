@@ -1,9 +1,9 @@
 import resty, { Controller, Get, Context, Service, Inject } from "../src";
 
-@Service("beanFactory")
+@Service()
 class BeanFactory {
   create() {
-    console.log("BeanFactory");
+    return "BeanFactory";
   }
 }
 
@@ -13,8 +13,7 @@ class HelloController {
 
   @Get("/")
   index() {
-    // console.log(this.beanFactory);
-    return "Hello World";
+    return "Hello World from " + this.beanFactory.create();
   }
 
   @Get("/health")
