@@ -165,6 +165,10 @@ class Application {
           _router.head(mehtodMetadata.path, middlewares, handler);
           break;
 
+        case HTTPMethod.all:
+          _router.all(mehtodMetadata.path, middlewares, handler);
+          break;
+
         default:
           throw Error(`${mehtodMetadata.method} method not valid`);
           break;

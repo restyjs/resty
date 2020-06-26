@@ -9,6 +9,7 @@ export enum HTTPMethod {
   patch = "patch",
   options = "options",
   head = "head",
+  all = "all",
 }
 
 export interface HTTPMethodMetadata {
@@ -33,8 +34,8 @@ function httpMethod(
       Reflect.getMetadata(MetadataKeys.httpMethod, target.constructor) ?? [];
 
     // Append / if not exist in path
-    if (!path.startsWith('/')) {
-      path = '/' + path;
+    if (!path.startsWith("/")) {
+      path = "/" + path;
     }
 
     const metadata: HTTPMethodMetadata = {
@@ -81,4 +82,8 @@ export function Options(path: string, middlewares?: express.RequestHandler[]) {
 
 export function Head(path: string, middlewares?: express.RequestHandler[]) {
   return httpMethod(path, HTTPMethod.head, middlewares);
+}
+
+export function All(path: string, middlewares?: express.RequestHandler[]) {
+  return httpMethod(path, HTTPMethod.all, middlewares);
 }
