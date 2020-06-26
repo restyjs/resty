@@ -118,7 +118,7 @@ class Application {
     const arrHttpMethodMetada: HTTPMethodMetadata[] =
       Reflect.getMetadata(MetadataKeys.httpMethod, controller) ?? [];
 
-    Container.set(controller, new controller());
+    // Container.set(controller, new controller());
 
     arrHttpMethodMetada.map((mehtodMetadata) => {
       const handler = this.initRequestHandler(controller, mehtodMetadata);
@@ -268,7 +268,12 @@ class Application {
           }
 
           res.status(500);
-          res.json(err);
+          res.json({
+            error: {
+              statusCode: 500,
+              message: err.message ? err.message : err,
+            },
+          });
         }
       );
     }
