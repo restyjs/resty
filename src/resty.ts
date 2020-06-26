@@ -261,7 +261,9 @@ class Application {
             return;
           } else if (err instanceof HTTPError) {
             res.status(err.statusCode);
-            res.json(err);
+            res.json({
+              error: err,
+            });
             return;
           }
 
