@@ -10,19 +10,19 @@ import { ControllerMetadata } from "./decorators/Controller";
 import { HTTPMethodMetadata, HTTPMethod } from "./decorators/HttpMethods";
 import { RequestParamMetadata } from "./decorators/Param";
 import { Context } from "./context";
-import { ValidationError, HTTPError } from "./errors";
 import { Provider } from "./provider";
+
+type RequestHandler = express.RequestHandler | express.ErrorRequestHandler;
 
 interface Options {
   app?: express.Application;
   router?: express.Router;
   controllers: any[];
   providers?: Provider[];
-  middlewares?: express.RequestHandler[];
-  postMiddlewares?: express.RequestHandler[];
+  middlewares?: RequestHandler[];
+  postMiddlewares?: RequestHandler[];
   bodyParser?: boolean;
   trustProxy?: boolean;
-  handleErrors?: boolean;
   routePrefix?: string;
 }
 
@@ -32,11 +32,10 @@ class Application {
     private readonly router: express.Router,
     private readonly controllers: any[],
     private readonly providers: Provider[],
-    private readonly middlewares?: express.RequestHandler[],
-    private readonly postMiddlewares?: express.RequestHandler[],
+    private readonly middlewares?: RequestHandler[],
+    private readonly postMiddlewares?: RequestHandler[],
     private readonly bodyParser?: boolean,
     private readonly trustProxy?: boolean,
-    private readonly handleErrors?: boolean,
     private readonly routePrefix?: string
   ) {
     try {
@@ -53,9 +52,6 @@ class Application {
 
       // init post middlewares
       this.initPostMiddlewares();
-
-      // init error handlers
-      this.initErrorHandlers();
     } catch (error) {
       console.error(error);
       exit(1);
@@ -77,13 +73,17 @@ class Application {
 
   private initPreMiddlewares() {
     if (this.middlewares) {
-      this.middlewares.forEach((middleware) => this.app.use(middleware));
+      this.middlewares.forEach((middleware) => {
+        this.app.use(middleware);
+      });
     }
   }
 
   private initPostMiddlewares() {
     if (this.postMiddlewares) {
-      this.postMiddlewares.forEach((middleware) => this.app.use(middleware));
+      this.postMiddlewares.forEach((middleware) => {
+        this.app.use(middleware);
+      });
     }
   }
 
@@ -225,46 +225,6 @@ class Application {
     };
   }
 
-  private initErrorHandlers() {
-    if (this.handleErrors) {
-      this.app.use((req, res, next) => {
-        const error: Error = new HTTPError("Not Found", 404);
-        next(error);
-      });
-
-      this.app.use(
-        (
-          err: Error,
-          req: express.Request,
-          res: express.Response,
-          next: express.NextFunction
-        ) => {
-          if (err instanceof ValidationError) {
-            res.status(400);
-            res.json({
-              error: err,
-            });
-            return;
-          } else if (err instanceof HTTPError) {
-            res.status(err.statusCode);
-            res.json({
-              error: err,
-            });
-            return;
-          }
-
-          res.status(500);
-          res.json({
-            error: {
-              statusCode: 500,
-              message: err.message ? err.message : err,
-            },
-          });
-        }
-      );
-    }
-  }
-
   initProviders() {
     (async () => {
       await this.providers.map(async (provider) => {
@@ -295,7 +255,6 @@ export function resty(options: Options): express.Application {
     options.postMiddlewares,
     options.bodyParser,
     options.trustProxy,
-    options.handleErrors ?? true,
     options.routePrefix
   );
 

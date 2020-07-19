@@ -6,6 +6,8 @@ import resty, {
   Inject,
   Body,
   Post,
+  DefaultErrorHandler,
+  NotFoundErrorHandler,
 } from "../src";
 
 @Service()
@@ -38,7 +40,7 @@ class HelloController {
 const app = resty({
   routePrefix: "/api",
   controllers: [HelloController],
-  providers: [],
+  postMiddlewares: [NotFoundErrorHandler, DefaultErrorHandler],
 });
 
 app.listen(8080);

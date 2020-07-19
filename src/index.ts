@@ -28,6 +28,7 @@ export { Param } from "./decorators/Param";
 export { Context } from "./context";
 export { ValidationError, HTTPError } from "./errors";
 export { Provider } from "./provider";
+export { DefaultErrorHandler, NotFoundErrorHandler } from "./handlers";
 
 export {
   Request,
