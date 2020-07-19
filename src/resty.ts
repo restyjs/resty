@@ -10,7 +10,6 @@ import { ControllerMetadata } from "./decorators/Controller";
 import { HTTPMethodMetadata, HTTPMethod } from "./decorators/HttpMethods";
 import { RequestParamMetadata } from "./decorators/Param";
 import { Context } from "./context";
-import { transformAndValidate } from "./helpers/transformAndValidate";
 import { ValidationError, HTTPError } from "./errors";
 import { Provider } from "./provider";
 
@@ -189,20 +188,7 @@ class Application {
           arrParamMetada.map(async (paramMetadata) => {
             switch (paramMetadata.paramType) {
               case "body":
-                try {
-                  args[paramMetadata.index] = await transformAndValidate(
-                    paramMetadata.type,
-                    req.body,
-                    {
-                      transformer: paramMetadata.classTransform
-                        ? paramMetadata.classTransform
-                        : void 0,
-                      validator: paramMetadata.validatorOptions,
-                    }
-                  );
-                } catch (error) {
-                  throw new ValidationError(error);
-                }
+                args[paramMetadata.index] = req.body;
                 break;
               case "param":
                 if (paramMetadata.name) {

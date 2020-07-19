@@ -1,7 +1,4 @@
-import { ValidatorOptions } from "class-validator";
-import { ClassTransformOptions } from "class-transformer";
 import { MetadataKeys } from "../metadataKeys";
-import { BodyOptions } from "./Body";
 
 export type RequestParamType =
   | "body"
@@ -30,16 +27,6 @@ export interface RequestParamMetadata {
   name?: string;
   parse: boolean;
   required?: boolean;
-  transform?: (
-    value?: any,
-    request?: any,
-    response?: any
-  ) => Promise<any> | any;
-  extraOptions?: any;
-  classTransform?: ClassTransformOptions;
-  validate?: boolean;
-  validatorOptions?: ValidatorOptions;
-  explicitType?: any;
 }
 
 export function Param(paramName: string) {

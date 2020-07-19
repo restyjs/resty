@@ -1,19 +1,7 @@
-import { ValidatorOptions } from "class-validator";
-import { ClassTransformOptions } from "class-transformer";
-
 import { MetadataKeys } from "../metadataKeys";
 import { RequestParamMetadata } from "./Param";
 
-export interface BodyOptions {
-  required?: boolean;
-  transform?: ClassTransformOptions;
-  validate?: boolean;
-  validatorOptions?: ValidatorOptions;
-  type?: any;
-  options?: any;
-}
-
-export function Body(options?: BodyOptions) {
+export function Body() {
   return function (target: Object, propertyKey: string, index: number) {
     let arrParamMetada: RequestParamMetadata[] =
       Reflect.getOwnMetadata(
@@ -31,12 +19,6 @@ export function Body(options?: BodyOptions) {
         index
       ],
       parse: false,
-      required: options ? options.required ?? false : false,
-      classTransform: options ? options.transform : undefined,
-      validate: options ? options.validate : false,
-      validatorOptions: options ? options.validatorOptions : undefined,
-      explicitType: options ? options.type : undefined,
-      extraOptions: options ? options.options : undefined,
     };
 
     arrParamMetada.push(metadata);

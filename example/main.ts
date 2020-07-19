@@ -1,4 +1,12 @@
-import resty, { Controller, Get, Context, Service, Inject } from "../src";
+import resty, {
+  Controller,
+  Get,
+  Context,
+  Service,
+  Inject,
+  Body,
+  Post,
+} from "../src";
 
 @Service()
 class BeanFactory {
@@ -19,6 +27,11 @@ class HelloController {
   @Get("/health")
   health(ctx: Context) {
     return ctx.res.json({ status: "ok" }).status(200);
+  }
+
+  @Post("/body")
+  bodyTest(@Body() body: any) {
+    return body;
   }
 }
 
