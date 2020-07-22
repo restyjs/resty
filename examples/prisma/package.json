@@ -4,7 +4,10 @@
   "main": "src/main.ts",
   "private": "true",
   "scripts": {
-    "postinstall": "prisma generate",
+    "postinstall": "yarn generate && yarn migrate:save && yarn migrate:up",
+    "generate": "prisma generate",
+    "migrate:save": "prisma migrate save --create-db --experimental",
+    "migrate:up": "prisma migrate up --experimental",
     "prestart:prod": "rimraf dist && yarn build",
     "start:prod": "node dist/main.js",
     "start": "nodemon",

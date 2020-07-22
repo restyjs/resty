@@ -16,12 +16,12 @@ export class UserController {
   @Post("/")
   async post(@Body() body: any) {
     const { name, email } = body;
-    const result = await this.prisma.user.create({
+    const user = await this.prisma.user.create({
       data: {
         email: email,
         name: name,
       },
     });
-    return result;
+    return { user };
   }
 }

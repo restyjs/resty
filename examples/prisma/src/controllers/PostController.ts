@@ -21,13 +21,13 @@ export class PostController {
       where: { published: true },
       include: { author: true },
     });
-    return posts;
+    return { posts };
   }
 
   @Post("/")
   async create(@Body() body: any) {
     const { title, content, authorEmail } = body;
-    const result = await this.prisma.post.create({
+    const post = await this.prisma.post.create({
       data: {
         title,
         content,
@@ -35,7 +35,7 @@ export class PostController {
         author: { connect: { email: authorEmail } },
       },
     });
-    return result;
+    return { post };
   }
 
   @Delete("/:id")
@@ -45,7 +45,7 @@ export class PostController {
         id: id,
       },
     });
-    return post;
+    return { post };
   }
 
   @Put("/publish/:id")
@@ -54,7 +54,7 @@ export class PostController {
       where: { id: id },
       data: { published: true },
     });
-    return post;
+    return { post };
   }
 
   @Get("/filter")
@@ -75,7 +75,7 @@ export class PostController {
         ],
       },
     });
-    return posts;
+    return { posts };
   }
 
   @Get("/:id")
@@ -85,6 +85,6 @@ export class PostController {
         id: id,
       },
     });
-    return post;
+    return { post };
   }
 }
