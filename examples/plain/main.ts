@@ -8,7 +8,7 @@ import resty, {
   Post,
   DefaultErrorHandler,
   NotFoundErrorHandler,
-} from "../src";
+} from "../../src";
 
 @Service()
 class BeanFactory {
