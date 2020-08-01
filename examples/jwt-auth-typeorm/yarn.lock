@@ -49,10 +49,10 @@
   dependencies:
     safe-buffer "^5.1.2"
 
-"@restyjs/argon2@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@restyjs/argon2/-/argon2-1.0.0.tgz#cd21f47ca9b426b281517bef1ec46e68046105c7"
-  integrity sha512-AvRf04iZMnvQ6MPCtxqVi2FM1riVhomSh8mJk/6DK3Jg+pPO8RsUdihijei+lcRAw2kLij5ldsgTIgRPtTjK+g==
+"@restyjs/argon2@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@restyjs/argon2/-/argon2-1.0.2.tgz#4bf944b6507c114774a87a4f07ae9300c6f61d35"
+  integrity sha512-vGBJK0z6hnKxXqw8eqsEgNUuPXF8v4jzOpY/2kjJmRfmPQlZdGmrWJnot0l0ri3/H6XWXBxNUhKt+tM/wln0oQ==
   dependencies:
     argon2 "^0.26.2"
 
