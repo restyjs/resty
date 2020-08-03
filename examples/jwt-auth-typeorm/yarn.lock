@@ -56,42 +56,40 @@
   dependencies:
     argon2 "^0.26.2"
 
-"@restyjs/config@^0.0.1-alpha.20":
-  version "0.0.1-alpha.20"
-  resolved "https://registry.yarnpkg.com/@restyjs/config/-/config-0.0.1-alpha.20.tgz#fe3b19e959d1db060a906f374d001e51ecea204e"
-  integrity sha512-4f4dr8MpXxRUehr1CDpcppVhpCswYRWTHmWOPHGMR1mOXq/pDFsdUBgEq1NHvpEAKaUr6CHYILmlownadH5d4w==
+"@restyjs/config@^0.0.1-alpha.24":
+  version "0.0.1-alpha.24"
+  resolved "https://registry.yarnpkg.com/@restyjs/config/-/config-0.0.1-alpha.24.tgz#28c9adff5617f04f0eeebd459f69a79b9f0a0ddb"
+  integrity sha512-N9SI1YgRxiUIP49LItlsr6Log9Hk26Axae4siWJ08CYIcb5uwcDjgCM4teoKiP1ka3sxARvY34aa8GxY6yeccw==
   dependencies:
-    "@types/dotenv" "^8.2.0"
     dotenv "^8.2.0"
 
-"@restyjs/core@^0.0.1-alpha.20":
-  version "0.0.1-alpha.20"
-  resolved "https://registry.yarnpkg.com/@restyjs/core/-/core-0.0.1-alpha.20.tgz#495d4e0a18297003fb2f99f24aa4a06902d228ae"
-  integrity sha512-HOdSAIjsd9KwYbsA0v3BHnZMIHOSKxX4twofyxyeLhuVGUTyvCCMnSaBJ/0TjUBQVNmPvE7twwBoB+jbnIUVWA==
+"@restyjs/core@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@restyjs/core/-/core-1.0.4.tgz#c9eb12716be6d9d6621f74f02f1fd4486911f24b"
+  integrity sha512-jBi+ut7E3HJ3JW1DpkcnoeWZexG28852PozFVQntwMREp78p8KC+8//GzTYPcVWO/UZtvP0CNweApWHilN4EgA==
   dependencies:
     "@types/body-parser" "^1.19.0"
     "@types/express" "^4.17.6"
     "@types/node" "^14.0.14"
-    "@types/reflect-metadata" "^0.1.0"
     body-parser "^1.19.0"
     express "^4.17.1"
     reflect-metadata "^0.1.13"
     typedi "^0.8.0"
 
-"@restyjs/jwt@^0.0.1-alpha.20":
-  version "0.0.1-alpha.20"
-  resolved "https://registry.yarnpkg.com/@restyjs/jwt/-/jwt-0.0.1-alpha.20.tgz#75e0a7811fcc6f43f0e044d96f92c21333c37f27"
-  integrity sha512-52zHtxs8VGqYLW7ytaSInC9v1j2CUGqQmYXwQC6mWMkdfYvEKE7JQT/00Abv8oYvDQQu4dKZ+yrOGCongqaybQ==
+"@restyjs/jwt@^0.0.1-alpha.21":
+  version "0.0.1-alpha.21"
+  resolved "https://registry.yarnpkg.com/@restyjs/jwt/-/jwt-0.0.1-alpha.21.tgz#4df146c8ca8d7a6f3d7bf513d7349e4df2b52a11"
+  integrity sha512-mirSsVZ5C9gMdsG+Kg/WH7yqKnEXYGLMBzbqSkjHMI4QTN+4fHCzXUbrvHxoHpvESNouZY6Rupc+ZJMY0NhrQg==
   dependencies:
     "@types/express-jwt" "^0.0.42"
     "@types/jsonwebtoken" "^8.5.0"
     express-jwt "^6.0.0"
     jsonwebtoken "^8.5.1"
 
-"@restyjs/typeorm@^0.0.1-alpha.22":
-  version "0.0.1-alpha.22"
-  resolved "https://registry.yarnpkg.com/@restyjs/typeorm/-/typeorm-0.0.1-alpha.22.tgz#096b9d5878e8da6a04b383c76c2721e7258a4189"
-  integrity sha512-lOEu0dw+QE6wCE8fO1Vy0TZmyTDBB55elT+dmBy8lsIwr0ZGEMSyvaw2ypS3SAAjfSQfmBABK920hCpN6ajWYg==
+"@restyjs/typeorm@^0.0.1-alpha.23":
+  version "0.0.1-alpha.23"
+  resolved "https://registry.yarnpkg.com/@restyjs/typeorm/-/typeorm-0.0.1-alpha.23.tgz#ebf461a6180b260c2eb6387e5e6e17fb229a68ee"
+  integrity sha512-Op/ClVDyVQ2CW1+YosurWPpQ0Obsa3s4Hg4zWo5wHsAq/ifoR0/94G4qYQMSf16HF4vS1f5Tugvd5CKprB4hdg==
 
 "@sindresorhus/is@^0.14.0":
   version "0.14.0"
@@ -124,13 +122,6 @@
   integrity sha512-2+FrkXY4zllzTNfJth7jOqEHC+enpLeGslEhpnTAkg21GkRrWV4SsAtqchtT4YS9/nODBU2/ZfsBY2X4J/dX7A==
   dependencies:
     "@types/node" "*"
-
-"@types/dotenv@^8.2.0":
-  version "8.2.0"
-  resolved "https://registry.yarnpkg.com/@types/dotenv/-/dotenv-8.2.0.tgz#5cd64710c3c98e82d9d15844375a33bf1b45d053"
-  integrity sha512-ylSC9GhfRH7m1EUXBXofhgx4lUWmFeQDINW5oLuS+gxWdfUeW4zJdeVTYVkexEW+e2VUvlZR2kGnGGipAWR7kw==
-  dependencies:
-    dotenv "*"
 
 "@types/express-jwt@^0.0.42":
   version "0.0.42"
@@ -197,13 +188,6 @@
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/@types/range-parser/-/range-parser-1.2.3.tgz#7ee330ba7caafb98090bece86a5ee44115904c2c"
   integrity sha512-ewFXqrQHlFsgc09MK5jP5iR7vumV/BYayNC6PgJO2LPe8vrnNFyjQjSppfEngITi0qvfKtzFvgKymGheFM9UOA==
-
-"@types/reflect-metadata@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@types/reflect-metadata/-/reflect-metadata-0.1.0.tgz#592805bdf6d63dd7229773218afeba37ac2eab16"
-  integrity sha512-bXltFLY3qhzCnVYP5iUpeSICagQ8rc9K2liS+8M0lBcz54BHs3O6W5UvqespVSuebo1BXLi+/y9ioELAW9SC2A==
-  dependencies:
-    reflect-metadata "*"
 
 "@types/serve-static@*":
   version "1.13.4"
@@ -773,15 +757,15 @@ dot-prop@^5.2.0:
   dependencies:
     is-obj "^2.0.0"
 
-dotenv@*, dotenv@^8.2.0:
-  version "8.2.0"
-  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-8.2.0.tgz#97e619259ada750eea3e4ea3e26bceea5424b16a"
-  integrity sha512-8sJ78ElpbDJBHNeBzUbUVLsqKdccaa/BXF1uPTw3GrvQTBgrQrtObr2mUrE38vzYd8cEv+m/JBfDLioYcfXoaw==
-
 dotenv@^6.2.0:
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-6.2.0.tgz#941c0410535d942c8becf28d3f357dbd9d476064"
   integrity sha512-HygQCKUBSFl8wKQZBSemMywRWcEDNidvNbjGVyZu3nbZ8qq9ubiPoGLMdRDpfSrpkkm9BXYFkpKxxFX38o/76w==
+
+dotenv@^8.2.0:
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-8.2.0.tgz#97e619259ada750eea3e4ea3e26bceea5424b16a"
+  integrity sha512-8sJ78ElpbDJBHNeBzUbUVLsqKdccaa/BXF1uPTw3GrvQTBgrQrtObr2mUrE38vzYd8cEv+m/JBfDLioYcfXoaw==
 
 duplexer3@^0.1.4:
   version "0.1.4"
@@ -2023,7 +2007,7 @@ readdirp@~3.4.0:
   dependencies:
     picomatch "^2.2.1"
 
-reflect-metadata@*, reflect-metadata@^0.1.13:
+reflect-metadata@^0.1.13:
   version "0.1.13"
   resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.13.tgz#67ae3ca57c972a2aa1642b10fe363fe32d49dc08"
   integrity sha512-Ts1Y/anZELhSsjMcU605fU9RE4Oi3p5ORujwbIKXfWa+0Zxs510Qrmrce5/Jowq3cHSZSJqBjypxmHarc+vEWg==
