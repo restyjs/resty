@@ -20,7 +20,7 @@
     "typescript": "^3.9.7"
   },
   "dependencies": {
-    "@prisma/client": "^2.3.0",
+    "@prisma/client": "^2.4.1",
     "@restyjs/core": "^1.0.4"
   }
 }
