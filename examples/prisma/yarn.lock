@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@prisma/cli@^2.5.0":
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/@prisma/cli/-/cli-2.5.0.tgz#a6d8c0ebd79230900d44d2eebcf62f02b3612214"
-  integrity sha512-yqGhDYH8lxIfT/1gjg6VVb2THS+k0cAbnoR8UENNrAAUWGzroZSvz+ECMsVinKshTUHJkD69yzi9i/nDqAODSw==
+"@prisma/cli@^2.5.1":
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/@prisma/cli/-/cli-2.5.1.tgz#fef4da2ed1b7f032b3a9bcce97d0a119b148ceb1"
+  integrity sha512-cu7YiskmiXZ6FXNf/8gfkzB10AjoHiCIHUgBOPNnS6lXJPU1Krh6TQOEXH6tNTB19XeUXO7KetTcqKGW48IkMQ==
 
 "@prisma/client@^2.5.0":
   version "2.5.0"
