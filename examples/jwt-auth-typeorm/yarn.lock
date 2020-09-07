@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@hapi/address@^4.0.1", "@hapi/address@^4.1.0":
+"@hapi/address@^4.1.0":
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/@hapi/address/-/address-4.1.0.tgz#d60c5c0d930e77456fdcde2598e77302e2955e1d"
   integrity sha512-SkszZf13HVgGmChdHo/PxchnSaCJ6cetVqLzyciudzZRT0jcOouIF/Q93mgjw8cce+D+4F4C1Z/WrfFN+O3VHQ==
@@ -18,17 +18,6 @@
   version "9.0.4"
   resolved "https://registry.yarnpkg.com/@hapi/hoek/-/hoek-9.0.4.tgz#e80ad4e8e8d2adc6c77d985f698447e8628b6010"
   integrity sha512-EwaJS7RjoXUZ2cXXKZZxZqieGtc7RbvQhUy8FwDoMQtxWVi14tFjeFCYPZAM1mBCpOpiBpyaZbb9NeHc7eGKgw==
-
-"@hapi/joi@17.x.x":
-  version "17.1.1"
-  resolved "https://registry.yarnpkg.com/@hapi/joi/-/joi-17.1.1.tgz#9cc8d7e2c2213d1e46708c6260184b447c661350"
-  integrity sha512-p4DKeZAoeZW4g3u7ZeRo+vCDuSDgSvtsB/NpfjXEHTUjSeINAi/RrVOWiVQ1isaoLzMvFEhe8n5065mQq1AdQg==
-  dependencies:
-    "@hapi/address" "^4.0.1"
-    "@hapi/formula" "^2.0.0"
-    "@hapi/hoek" "^9.0.0"
-    "@hapi/pinpoint" "^2.0.0"
-    "@hapi/topo" "^5.0.0"
 
 "@hapi/pinpoint@^2.0.0":
   version "2.0.0"
@@ -156,11 +145,6 @@
     "@types/express-serve-static-core" "*"
     "@types/qs" "*"
     "@types/serve-static" "*"
-
-"@types/hapi__joi@17.x.x":
-  version "17.1.4"
-  resolved "https://registry.yarnpkg.com/@types/hapi__joi/-/hapi__joi-17.1.4.tgz#e46cd1bd81d25cd45247d652dadb3666514d807c"
-  integrity sha512-gqY3TeTyZvnyNhM02HgyCIoGIWsTFMnuzMfnD8evTsr1KIfueGJaz+QC77j+dFvhZ5cJArUNjDRHUjPxNohzGA==
 
 "@types/jsonwebtoken@^8.5.0":
   version "8.5.0"
@@ -476,14 +460,13 @@ caseless@~0.12.0:
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
   integrity sha1-G2gcIf+EAzyCZUMJBolCDRhxUdw=
 
-celebrate@^12.2.0:
-  version "12.2.0"
-  resolved "https://registry.yarnpkg.com/celebrate/-/celebrate-12.2.0.tgz#f754d2858eacee2e009ddb3cc22f535ebbab2a9b"
-  integrity sha512-dkcQaUL4zrPOua/NwTM74jf/NY3wv9Fyb1mkC2ru75KRHowSIDe/tJtIG9yRyPyFCfkr1odif8zNQq23eTwEYg==
+celebrate@^13.0.1:
+  version "13.0.1"
+  resolved "https://registry.yarnpkg.com/celebrate/-/celebrate-13.0.1.tgz#55c70a8d4ac64b3bc44357e903287118b3b71ce5"
+  integrity sha512-wMChTd/dJIbw/i8u3ftdgWuXxbfNCla5OIV8BM03+/w1U0zrvC/UpcUjnPNhubWP3IlNzn3UWv8m11yD5AOgUw==
   dependencies:
-    "@hapi/joi" "17.x.x"
-    "@types/hapi__joi" "17.x.x"
     escape-html "1.0.3"
+    joi "17.x.x"
     lodash "4.17.x"
 
 chalk@^1.1.1:
@@ -1334,7 +1317,7 @@ isstream@~0.1.2:
   resolved "https://registry.yarnpkg.com/isstream/-/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
   integrity sha1-R+Y/evVa+m+S4VAOaQ64uFKcCZo=
 
-joi@^17.2.1:
+joi@17.x.x, joi@^17.2.1:
   version "17.2.1"
   resolved "https://registry.yarnpkg.com/joi/-/joi-17.2.1.tgz#e5140fdf07e8fecf9bc977c2832d1bdb1e3f2a0a"
   integrity sha512-YT3/4Ln+5YRpacdmfEfrrKh50/kkgX3LgBltjqnlMPIYiZ4hxXZuVJcxmsvxsdeHg9soZfE3qXxHC2tMpCCBOA==
