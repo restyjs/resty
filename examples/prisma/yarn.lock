@@ -14,10 +14,10 @@
   dependencies:
     pkg-up "^3.1.0"
 
-"@restyjs/core@^1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@restyjs/core/-/core-1.0.4.tgz#c9eb12716be6d9d6621f74f02f1fd4486911f24b"
-  integrity sha512-jBi+ut7E3HJ3JW1DpkcnoeWZexG28852PozFVQntwMREp78p8KC+8//GzTYPcVWO/UZtvP0CNweApWHilN4EgA==
+"@restyjs/core@^1.0.6":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@restyjs/core/-/core-1.0.6.tgz#a919267a4dd2459ffcd061e957ec2172f34d0ba2"
+  integrity sha512-evOvSr7YVtGSHti3JdrtvTSHEs1q+vplFRK/NRZCw3ygOgcOixy5hw8lTF9tAw6CmPhZY+hKIfofHagDyp4peA==
   dependencies:
     "@types/body-parser" "^1.19.0"
     "@types/express" "^4.17.6"
