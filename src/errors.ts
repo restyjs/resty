@@ -1,26 +1,15 @@
-export class HTTPError extends Error {
-  statusCode: number;
+export class Exception extends Error {
+  status: number = 500;
+  code?: string;
 
-  constructor(message: string, statusCode?: number) {
-    super();
-    this.statusCode = statusCode ?? 500;
-    this.message = message;
-  }
-}
-
-export class ValidationError extends HTTPError {
-  errors: Object;
-
-  constructor(errors: object) {
-    var message = "Bad Request";
-    if (Array.isArray(errors)) {
-      message = [
-        "failed to validate",
-        errors.map((error) => error.property).join(", "),
-      ].join(" ");
-    }
+  constructor(message: string, status: number = 500, code?: string) {
     super(message);
-    this.statusCode = 400;
-    this.errors = errors;
+    this.message = code ? `${code}: ${message}` : message;
+    this.status = status;
+    this.code = code;
   }
 }
+
+export class HTTPError extends Exception { }
+
+export class ValidationError extends Exception { }
