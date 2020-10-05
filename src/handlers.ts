@@ -27,32 +27,3 @@ export const DefaultErrorHandler: express.ErrorRequestHandler = (
     next(err);
   }
 };
-
-// export const DefaultErrorHandler: express.ErrorRequestHandler = (
-//   err: Error,
-//   req: express.Request,
-//   res: express.Response,
-//   next: express.NextFunction
-// ) => {
-//   if (err instanceof ValidationError) {
-//     res.status(400);
-//     res.json({
-//       error: err,
-//     });
-//     return;
-//   } else if (err instanceof HTTPError) {
-//     res.status(err.status);
-//     res.json({
-//       error: err,
-//     });
-//     return;
-//   }
-
-//   res.status(500);
-//   res.json({
-//     error: {
-//       statusCode: 500,
-//       message: err.message ? err.message : err,
-//     },
-//   });
-// };
