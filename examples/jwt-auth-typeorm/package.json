@@ -15,7 +15,7 @@
     "typescript": "^4.0.5"
   },
   "dependencies": {
-    "@restyjs/argon2": "^1.0.5",
+    "@restyjs/argon2": "^1.0.6",
     "@restyjs/config": "^0.0.2",
     "@restyjs/core": "^1.0.6",
     "@restyjs/jwt": "^0.0.1",
