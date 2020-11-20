@@ -26,17 +26,17 @@
   dependencies:
     argon2 "^0.27.0"
 
-"@restyjs/config@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@restyjs/config/-/config-0.0.2.tgz#a1872d64c492850af2dc81531652952de0533c2b"
-  integrity sha512-yFz2RPsBzN+nYhNZeUohmkhDIsemyCHznSPK51mEGVgtTk1/uNo4BJ0UQIrpUcpuHR8wV8Iv+OTccDCBtUbogg==
+"@restyjs/config@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@restyjs/config/-/config-0.0.4.tgz#8b6faf91ea8623ffa94269ca0472a740fd0f9f8d"
+  integrity sha512-7y+D7ffo9zq5HORP5yahHiK886/KNpyo+OWyYCpbJt3TgApm6+TJu68gW3ixzudBHoX3/M8BEb534iMRXtF7MA==
   dependencies:
     dotenv "^8.2.0"
 
-"@restyjs/core@^1.0.6":
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/@restyjs/core/-/core-1.0.6.tgz#a919267a4dd2459ffcd061e957ec2172f34d0ba2"
-  integrity sha512-evOvSr7YVtGSHti3JdrtvTSHEs1q+vplFRK/NRZCw3ygOgcOixy5hw8lTF9tAw6CmPhZY+hKIfofHagDyp4peA==
+"@restyjs/core@^1.0.7":
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/@restyjs/core/-/core-1.0.7.tgz#5b3eadc8a9bc1f95c0db16f9470bbce860790aee"
+  integrity sha512-IHfd1aE32sPeTZHUuaR69GHUwIeOaYJQxBFAKTTY8jbVuvmanLAkulagxz8QJraCRAVHir1hsnSrMT1YI743lg==
   dependencies:
     "@types/body-parser" "^1.19.0"
     "@types/express" "^4.17.6"
@@ -46,20 +46,20 @@
     reflect-metadata "^0.1.13"
     typedi "^0.8.0"
 
-"@restyjs/jwt@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@restyjs/jwt/-/jwt-0.0.1.tgz#361ed8b6467a28d66a9830cd2a8aaf3be44bcbbc"
-  integrity sha512-jAYxTHG/YJcsETDkPsHBjP7rPI9O0WKe8oaPL9QKBxmGdRKJdcKfPE7it2fGVOtRVmgSIXCVPEkd+qzSVsSCkQ==
+"@restyjs/jwt@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@restyjs/jwt/-/jwt-0.0.2.tgz#f08888bd40bf4c590f643d3158689a2e9af4eafc"
+  integrity sha512-M6T2RQEHZ4kBOKCSqWtByin3UKZFd/dG6U0VtiffX+db8TudxM3iVX6GqYmdrtXOyGPXlutBNyF7i7A760moJA==
   dependencies:
     "@types/express-jwt" "^0.0.42"
     "@types/jsonwebtoken" "^8.5.0"
     express-jwt "^6.0.0"
     jsonwebtoken "^8.5.1"
 
-"@restyjs/typeorm@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@restyjs/typeorm/-/typeorm-0.0.1.tgz#6e7c2ae1e289981502b637c896116da0b62e767d"
-  integrity sha512-pMnIcPNrMvAuXalPCUmhJ8T/2Qy60rJhrLic7AwqcdKRJvD/qQSUBxBt42Cxdt9IOwvEs9rbLnqozLQ3rWKo0Q==
+"@restyjs/typeorm@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@restyjs/typeorm/-/typeorm-0.0.2.tgz#55432f218df0100b018afeb0c768773a655e2f7d"
+  integrity sha512-mgJX2Y58dbTwfalOj7d4R7g/PSdbstKZ7KXwyuP3C/xAfVuETFTKl84Et/R3waKc3OokAFFxq4kNEeonTZP8rw==
 
 "@sideway/address@^4.1.0":
   version "4.1.0"
