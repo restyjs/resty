@@ -2,12 +2,12 @@
 # yarn lockfile v1
 
 
-"@prisma/cli@^2.16.0":
-  version "2.16.0"
-  resolved "https://registry.yarnpkg.com/@prisma/cli/-/cli-2.16.0.tgz#78bc00ac31495a40de27dc4e7822e748d07aef83"
-  integrity sha512-sgZVHyTN8tC8rneJ17+p8XWoS2bzt1BBADAf2rbvl5sQpVQo7YD4cGZHJS01i+tOlGb05jGAyY5NvuHI5251dw==
+"@prisma/cli@^2.16.1":
+  version "2.16.1"
+  resolved "https://registry.yarnpkg.com/@prisma/cli/-/cli-2.16.1.tgz#28a849c3e793472857fe123c48bfb038f7e80362"
+  integrity sha512-nVw8gs+o6bZ1CbaYzKmPcy2I4MJcP7FW7/4PkLgvy9v3/EWd9CKfSUX9b6cMq3uK9Jxa5kTejwNQkLHnihzxrg==
   dependencies:
-    "@prisma/engines" "2.16.0-43.a973e24a4e5194f8fe3301bfa7ff982b24f97c05"
+    "@prisma/engines" "2.16.1-1.8b74ad57aaf2cc6c155f382a18a8e3ba95aceb03"
 
 "@prisma/client@^2.16.0":
   version "2.16.0"
@@ -21,10 +21,10 @@
   resolved "https://registry.yarnpkg.com/@prisma/engines-version/-/engines-version-2.16.0-44.854c8ba7f0dce66f115af36af24e66989a8c02a1.tgz#6df1a9a9f4c711e18861be2de4c4f0e363d0aae9"
   integrity sha512-/gcqWJDXoo0vsYi7fhdhdyjfMXxJPjKl8K7oc/k2BH7IQuXUB1A+ZnFgqRcT/rKuyU4xH8+N+l+C4boWlqYvgQ==
 
-"@prisma/engines@2.16.0-43.a973e24a4e5194f8fe3301bfa7ff982b24f97c05":
-  version "2.16.0-43.a973e24a4e5194f8fe3301bfa7ff982b24f97c05"
-  resolved "https://registry.yarnpkg.com/@prisma/engines/-/engines-2.16.0-43.a973e24a4e5194f8fe3301bfa7ff982b24f97c05.tgz#f3cbfe5aed6ec437fe30c5b6a503e925cf86088a"
-  integrity sha512-vwZhfa/w+2mzoKMquCogpegLKuZnu/RmhVMDUYxuSSw8o+tjanYpuvJYImioDZ+FoU1vTawxqMc4kfD1yKYRlA==
+"@prisma/engines@2.16.1-1.8b74ad57aaf2cc6c155f382a18a8e3ba95aceb03":
+  version "2.16.1-1.8b74ad57aaf2cc6c155f382a18a8e3ba95aceb03"
+  resolved "https://registry.yarnpkg.com/@prisma/engines/-/engines-2.16.1-1.8b74ad57aaf2cc6c155f382a18a8e3ba95aceb03.tgz#38f64337f6ad2ab9e13e7e2bac54286a79d2edfa"
+  integrity sha512-GZ1huP5KC6TPf9u8pYGFklUkGVTKFel6k4wL4iMr8AQ6MeSV4GDJX3lEtEJLb0ayj6je/hDEyQG9iMp/BysFYg==
 
 "@restyjs/core@^1.0.7":
   version "1.0.7"
