@@ -22,7 +22,7 @@
     "@restyjs/typeorm": "^0.0.1",
     "celebrate": "^13.0.4",
     "joi": "^17.3.0",
-    "sqlite3": "^5.0.0",
+    "sqlite3": "^5.0.1",
     "typeorm": "^0.2.29"
   }
 }
