@@ -19,10 +19,10 @@
   resolved "https://registry.yarnpkg.com/@phc/format/-/format-1.0.0.tgz#b5627003b3216dc4362125b13f48a4daa76680e4"
   integrity sha512-m7X9U6BG2+J+R1lSOdCiITLLrxm+cWlNI3HUFA92oLO77ObGNzaKdh8pMLqdZcshtkKuV84olNNXDfMc4FezBQ==
 
-"@restyjs/argon2@^1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@restyjs/argon2/-/argon2-1.0.5.tgz#35caf97c2422e5f947b5cca9cc9f2a6c513a8604"
-  integrity sha512-uYGLMQGhLlTXdIPMQoty92O6S6zwSrbtam44IsfibSVx8q5kWLNsw2JW1OD6lbV5wh/5X3Jj8y05JvCsdxIP2g==
+"@restyjs/argon2@^1.0.6":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@restyjs/argon2/-/argon2-1.0.6.tgz#85a67e1bf0983f5714bcac70397f94ad395c0603"
+  integrity sha512-RNsfh6r4tAPMjWVBWUC37y3t5rtFs+kQeN0C+R3FEM3cV8Ij4qlCR6tZFVt6EbEowTO/HyN7KP5Yqz+8TVQzRA==
   dependencies:
     argon2 "^0.27.0"
 
