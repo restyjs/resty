@@ -2,18 +2,12 @@
 # yarn lockfile v1
 
 
-"@prisma/bar@0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@prisma/bar/-/bar-0.0.1.tgz#088c4fbbb79c588391437ade9fd3a85527e753b3"
-  integrity sha512-FVLhwVkbfhXlBhroWfIXMLi+3Jh9IEzYp+9z+MUUiw3ZsbcoAil7CN9/QIjHc4/TcCRyRfuSmT7qCnn4O+TjJw==
-
-"@prisma/cli@^2.11.0":
-  version "2.11.0"
-  resolved "https://registry.yarnpkg.com/@prisma/cli/-/cli-2.11.0.tgz#34bdc5573ac40edae336b65fa73a164cae437622"
-  integrity sha512-RphW+1SPrEKgpuE5RFM0mv3BeVTF8MCRIyBt35Z9Z/E4YI30qgEWfZu6VfsNDarHRsFiJRKC73wx/aMQ2rLp4g==
+"@prisma/cli@^2.17.0":
+  version "2.17.0"
+  resolved "https://registry.yarnpkg.com/@prisma/cli/-/cli-2.17.0.tgz#27a963afc5c846ce77c75c5436c82919bf21b72d"
+  integrity sha512-G2Hu15E+dLX/VSj8NJzDPXJzl/ji331w+T97EW5NDIDDoGakSVW7r3xcw9dR4uRnoGtttZ7JhBFjXg6bt1Mb0g==
   dependencies:
-    "@prisma/bar" "0.0.1"
-    "@prisma/engines" "2.11.0-10.58369335532e47bdcec77a2f1e7c1fb83a463918"
+    "@prisma/engines" "2.17.0-35.3c463ebd78b1d21d8fdacdd27899e280cf686223"
 
 "@prisma/client@^2.17.0":
   version "2.17.0"
@@ -27,10 +21,10 @@
   resolved "https://registry.yarnpkg.com/@prisma/engines-version/-/engines-version-2.17.0-35.3c463ebd78b1d21d8fdacdd27899e280cf686223.tgz#9ae6ed4467a0febff8afaf216c1bb67225f51b84"
   integrity sha512-9idv5blqPUlvUPVT48eVi3T0RS/NBklUcjrla3jWyV8AYfB2BdaG/Zci7H5ajyYLnfZZHG9tBpP0LcveQCFH8A==
 
-"@prisma/engines@2.11.0-10.58369335532e47bdcec77a2f1e7c1fb83a463918":
-  version "2.11.0-10.58369335532e47bdcec77a2f1e7c1fb83a463918"
-  resolved "https://registry.yarnpkg.com/@prisma/engines/-/engines-2.11.0-10.58369335532e47bdcec77a2f1e7c1fb83a463918.tgz#5f02f311ce48297ef3fa9861dcab5ec3e52f1371"
-  integrity sha512-0WaUybWM7J5zQuG/zYLbV+ZKx9/nzS7Ruu7Y0K2lXJKy3Z9koeVttq+Xt7tVmUX9TLgI1Rwhb9R2e1JMNDWbsw==
+"@prisma/engines@2.17.0-35.3c463ebd78b1d21d8fdacdd27899e280cf686223":
+  version "2.17.0-35.3c463ebd78b1d21d8fdacdd27899e280cf686223"
+  resolved "https://registry.yarnpkg.com/@prisma/engines/-/engines-2.17.0-35.3c463ebd78b1d21d8fdacdd27899e280cf686223.tgz#08bc3633fd27fb1935805ef16c37802ed713db5b"
+  integrity sha512-FKjVD6NYbGiQhwas3hA2uMpNchz+Mf3tv5qA8Ci9cAkKHGqt3jWjjUAK9juVBqeOcv4OPimQYMrkRX6SvaxBjg==
 
 "@restyjs/core@^1.0.7":
   version "1.0.7"
