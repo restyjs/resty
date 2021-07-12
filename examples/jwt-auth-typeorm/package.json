@@ -20,7 +20,7 @@
     "@restyjs/core": "^1.0.7",
     "@restyjs/jwt": "^0.0.2",
     "@restyjs/typeorm": "^0.0.2",
-    "celebrate": "^14.0.0",
+    "celebrate": "^15.0.0",
     "joi": "^17.3.0",
     "sqlite3": "^5.0.2",
     "typeorm": "^0.2.34"
