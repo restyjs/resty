@@ -17,6 +17,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@restyjs/core": "*"
+    "@restyjs/core": "*",
+    "typeorm": "^0.2.41"
   }
 }
