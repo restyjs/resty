@@ -2,7 +2,7 @@
  * Raised when the requested connection doesn't exists in TypeORM.
  */
 export class ConnectionNotFoundError extends Error {
-  public name = 'ManagerNotFoundError';
+  public name = "ManagerNotFoundError";
 
   public get message() {
     return (

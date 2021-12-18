@@ -1,5 +1,5 @@
 export class PropertyTypeMissingError extends Error {
-  public name = 'PropertyTypeMissingError';
+  public name = "PropertyTypeMissingError";
 
   constructor(object: Object, propertyName: string) {
     super(
