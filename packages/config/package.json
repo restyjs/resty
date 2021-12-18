@@ -17,6 +17,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@restyjs/core": "*"
+    "@restyjs/core": "*",
+    "dotenv": "^10.0.0"
   }
 }
