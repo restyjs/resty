@@ -1,5 +1,5 @@
 {
-  "name": "resty",  
+  "name": "resty",
   "version": "1.0.7",
   "description": "A Node.js framework",
   "homepage": "https://restyjs.com",
@@ -19,7 +19,9 @@
   "devDependencies": {
     "eslint": "^8.4.1",
     "prettier": "^2.5.1",
-    "turbo": "latest"
+    "turbo": "latest",
+    "tsup": "^5.10.1",
+    "typescript": "^4.0.2"
   },
   "turbo": {
     "pipeline": {
