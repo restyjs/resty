@@ -1,0 +1,20 @@
+{
+  "name": "example",
+  "version": "1.0.0",
+  "main": "src/main.ts",
+  "license": "MIT",
+  "scripts": {
+    "start": "ts-node src/main.ts"
+  },
+  "dependencies": {
+    "@restyjs/argon2": "*",
+    "@restyjs/config": "*",
+    "@restyjs/core": "*",
+    "@restyjs/jwt": "*",
+    "@restyjs/typeorm": "*",
+    "celebrate": "^15.0.0",
+    "joi": "^17.5.0",
+    "sqlite3": "^5.0.2",
+    "ts-node": "^10.4.0"
+  }
+}

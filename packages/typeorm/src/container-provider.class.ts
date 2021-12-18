@@ -1,5 +1,5 @@
-import { ContainedType, ContainerInterface } from 'typeorm';
-import { Container, Constructable } from 'typedi';
+import { ContainedType, ContainerInterface } from "typeorm";
+import { Container, Constructable } from "typedi";
 
 /**
  * Class transforming between TypeDI API and the expected API by TypeORM.
@@ -11,7 +11,10 @@ export class TypeDIContainerProvider implements ContainerInterface {
      * them before to requesting them from the default container.
      */
     if (!Container.has(constructable as Constructable<T>)) {
-      Container.set({ id: constructable, type: constructable as Constructable<T> });
+      Container.set({
+        id: constructable,
+        type: constructable as Constructable<T>,
+      });
     }
 
     return Container.get(constructable as Constructable<T>);
