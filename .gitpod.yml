@@ -1,5 +1,0 @@
-image: gitpod/workspace-full
-
-tasks:
-  - command: yarn
-  - command: npm install -g release

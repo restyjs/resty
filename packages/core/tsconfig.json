@@ -4,7 +4,6 @@
     "module": "commonjs",
     "lib": ["ES7", "ESNext"],
     "rootDir": "src",
-    "outDir": ".",
     "declaration": true,
     "strict": true,
     "moduleResolution": "node",
@@ -14,6 +13,6 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": ["."],
+  "exclude": ["dist", "build", "node_modules"]
 }

@@ -1,86 +1,52 @@
 {
-  "name": "@restyjs/core",
+  "name": "resty",  
   "version": "1.0.7",
   "description": "A Node.js framework",
   "homepage": "https://restyjs.com",
-  "main": "index.js",
-  "types": "index.d.ts",
-  "repository": "https://github.com/restyjs/resty",
-  "author": "Satish Babariya",
-  "license": "MIT",
-  "keywords": [
-    "express",
-    "express.js",
-    "typescript",
-    "typescript-express",
-    "typescript",
-    "dependency-injection",
-    "controllers",
-    "typeorm",
-    "http",
-    "jwt",
-    "orm",
-    "express",
-    "express.js",
-    "typescript",
-    "typescript-express",
-    "typescript",
-    "dependency-injection",
-    "controllers",
-    "cli",
-    "restyjs",
-    "resty",
-    "typeorm",
-    "orm",
-    "typescript",
-    "typescript-orm",
-    "mysql",
-    "mysql-orm",
-    "postgresql",
-    "postgresql-orm",
-    "mariadb",
-    "mariadb-orm",
-    "sqlite",
-    "sqlite-orm",
-    "sql-server",
-    "sql-server-orm",
-    "oracle",
-    "oracle-orm"
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "apps/*"
   ],
   "scripts": {
-    "build": "tsc --build",
-    "test": "jest",
-    "dev": "ts-node examples/plain/main.ts",
-    "release": "yarn publish --access public"
-  },
-  "dependencies": {
-    "@types/body-parser": "^1.19.0",
-    "@types/express": "^4.17.6",
-    "@types/node": "^15.12.0",
-    "body-parser": "^1.19.0",
-    "express": "^4.17.1",
-    "reflect-metadata": "^0.1.13",
-    "typedi": "^0.8.0"
+    "build": "turbo run build",
+    "dev": "turbo run dev --no-cache --parallel --continue",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
-    "@types/jest": "^26.0.3",
-    "@types/supertest": "^2.0.9",
-    "jest": "^26.0.1",
-    "supertest": "^6.0.0",
-    "ts-jest": "^26.1.1",
-    "ts-node": "^10.0.0",
-    "typescript": "^4.0.2"
+    "eslint": "^8.4.1",
+    "prettier": "^2.5.1",
+    "turbo": "latest"
   },
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
-  },
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "node",
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "/dist/",
-      "/examples/"
-    ]
+  "turbo": {
+    "pipeline": {
+      "build": {
+        "outputs": [
+          "dist/**",
+          ".next/**"
+        ],
+        "dependsOn": [
+          "^build"
+        ]
+      },
+      "test": {
+        "outputs": [
+          "coverage/**"
+        ],
+        "dependsOn": []
+      },
+      "lint": {
+        "outputs": []
+      },
+      "dev": {
+        "cache": false
+      },
+      "clean": {
+        "cache": false
+      }
+    }
   }
 }

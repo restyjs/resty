@@ -1,0 +1,81 @@
+{
+  "name": "@restyjs/core",
+  "version": "1.0.7",
+  "description": "A Node.js framework",
+  "homepage": "https://restyjs.com",
+  "repository": "https://github.com/restyjs/resty",
+  "author": "Satish Babariya",
+  "license": "MIT",
+  "keywords": [
+    "express",
+    "express.js",
+    "typescript",
+    "typescript-express",
+    "typescript",
+    "dependency-injection",
+    "controllers",
+    "typeorm",
+    "http",
+    "jwt",
+    "orm",
+    "express",
+    "express.js",
+    "typescript",
+    "typescript-express",
+    "typescript",
+    "dependency-injection",
+    "controllers",
+    "cli",
+    "restyjs",
+    "resty",
+    "typeorm",
+    "orm",
+    "typescript",
+    "typescript-orm",
+    "mysql",
+    "mysql-orm",
+    "postgresql",
+    "postgresql-orm",
+    "mariadb",
+    "mariadb-orm",
+    "sqlite",
+    "sqlite-orm",
+    "sql-server",
+    "sql-server-orm",
+    "oracle",
+    "oracle-orm"
+  ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts  --dts",
+    "lint": "TIMING=1 eslint src --fix",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+  },
+  "dependencies": {
+    "@types/body-parser": "^1.19.0",
+    "@types/express": "^4.17.6",
+    "@types/node": "^15.12.0",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "reflect-metadata": "^0.1.13",
+    "typedi": "^0.8.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.3",
+    "@types/supertest": "^2.0.9",
+    "jest": "^26.0.1",
+    "supertest": "^6.0.0",
+    "ts-jest": "^26.1.1",
+    "ts-node": "^10.0.0",
+    "tsup": "^5.10.1",
+    "typescript": "^4.0.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
