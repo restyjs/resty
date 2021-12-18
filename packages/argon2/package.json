@@ -17,6 +17,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@restyjs/core": "*"
+    "@restyjs/core": "*",
+    "argon2": "^0.28.3"
   }
 }
