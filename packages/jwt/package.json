@@ -17,6 +17,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@restyjs/core": "*"
+    "@restyjs/core": "*",
+    "@types/jsonwebtoken": "^8.5.6",
+    "jsonwebtoken": "^8.5.1"
   }
 }
