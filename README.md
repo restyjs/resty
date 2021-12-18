@@ -1,42 +1,39 @@
 # resty.js
 
-
 [![TypeScript](https://img.shields.io/badge/-TypeScript-brightgreen?style=for-the-badge&logo=typescript)](https://github.com/microsoft/TypeScript)
 [![Express](https://img.shields.io/badge/-express.js-blue?style=for-the-badge&logo)](https://github.com/restyjs/resty)
 [![async/await](https://img.shields.io/badge/-async%2Fawait-green?style=for-the-badge&logo)](https://github.com/restyjs/resty)
 
-
-
 Fast, opinionated, minimalist and testable web framework built on top of express.js and typescript with decorators.
 
-
 # Table of Contents
-* [Installation](#installation)
-* [Get started](#get-started)
-* [Application](#application)
+
+- [Installation](#installation)
+- [Get started](#get-started)
+- [Application](#application)
   - [Create new resty.js app](#new)
   - [Add Route Prefix](#route-prefix)
   - [Use existing express.js app](#existing)
   - [Use existing express router](#existing-router)
-* [Controllers](#controllers)
+- [Controllers](#controllers)
   - [async/await](#async-await)
   - [Get, Post, Put, Delete, Patch](#http-methods)
   - [Context, Request, Response, Next](#context)
-* [Middlewares](#middlewares)
+- [Middlewares](#middlewares)
   - [Application Middlewares](#app-middlewares)
   - [Controller Middlewares](#controller-middlewares)
   - [Route Middlewares](#controller-middlewares)
   - [Post Middlewares](#post-middlewares)
-* [Error Handling](#error-handlers)
+- [Error Handling](#error-handlers)
   - [Default Error Handler](#default-error-handlers)
   - [Custom Error Handler](#custom-error-handlers)
-* [ORM / TypeORM](#typeorm)
+- [ORM / TypeORM](#typeorm)
   - [Database Connection](#db-connection)
   - [Typeorm Docs](#typeorm-docs)
-* [License](#license)
-
+- [License](#license)
 
 ## Installation
+
 Install from the command line:
 
 ```sh
@@ -50,7 +47,6 @@ enable following settings in `tsconfig.json`:
 "experimentalDecorators": true,
 ```
 
-
 ## Get started
 
 ```typescript
@@ -58,7 +54,6 @@ import resty, { Controller, Get, Context } from "@restyjs/core";
 
 @Controller("/hello")
 class HelloController {
-
   @Get("/")
   index() {
     return "Hello World";
@@ -70,9 +65,7 @@ const app = resty({
 });
 
 app.listen(8080);
-
 ```
-
 
 ## Application
 
@@ -99,9 +92,9 @@ const app = resty({
 #### Use existing express.js app
 
 inside resty you can pass your existing express app instance inside `app` parameter.
-```ts
 
-const express_app = express()
+```ts
+const express_app = express();
 
 const app = resty({
   app: express_app,
@@ -114,15 +107,13 @@ const app = resty({
 inside resty you can pass your existing express router inside `router` parameter.
 
 ```ts
-
-const router = express.Router()
+const router = express.Router();
 
 const app = resty({
   router: router,
   controllers: [],
 });
 ```
-
 
 ## Controllers
 
@@ -131,13 +122,11 @@ const app = resty({
 ```ts
 @Controller("/hello")
 class HelloController {
-
   @Get("/register")
   async register(ctx: Context, @Body() input: UserDTO) {
-    
     // create record
     const user = await createUser(input);
-    
+
     // return user record
     return ctx.res.json({ user }).status(200);
   }
@@ -195,15 +184,12 @@ export class UserController {
 
 #### Context, Request, Response, Next
 
-
-
 ```ts
   @Get("/health")
   health(ctx: Context) {
     return ctx.res.json({ status: "ok" }).status(200);
   }
 ```
-
 
 ## Middlewares
 
@@ -212,20 +198,19 @@ export class UserController {
 Application lavel middlewares like `helmet`, `cors` or `body-parser`
 
 ```ts
-import cors from 'cors';
-import helmet from 'helmet';
+import cors from "cors";
+import helmet from "helmet";
 
 const app = resty({
   routePrefix: "/api",
   controllers: [HelloController],
-  middlewares: [cors(), helmet()]
+  middlewares: [cors(), helmet()],
 });
 ```
 
 #### Controller Middlewares
 
 ```ts
-
 const isAdmin = async (req: any, res: any, next: any) => {
   if (!req.currentUser) {
     return next(new HTTPError("Error in checking current user", 500));
@@ -238,15 +223,12 @@ const isAdmin = async (req: any, res: any, next: any) => {
 
 @Controller("/admin", [isAdmin])
 export class AdminController {
-
   @Get("/")
   async allUsers() {
     const users = await getAllUsers();
     return { users };
   }
 }
-
-
 ```
 
 #### Route Middlewares
@@ -258,7 +240,6 @@ const isAdmin = async (req: any, res: any, next: any) => {
 
 @Controller("/post")
 export class AdminController {
-
   @Get("/", [isAdmin])
   async allUsers() {
     const users = await getAllUsers();
@@ -269,32 +250,27 @@ export class AdminController {
 
 #### Post Middlewares
 
-
 ```ts
-
 const app = resty({
   routePrefix: "/api",
   controllers: [HelloController],
-  postMiddlewares: []
+  postMiddlewares: [],
 });
 
 // User postMiddlewares or use same old app.use form express.
 app.use((req, res, next) => {
   next();
 });
-
 ```
-
 
 ## Error Handling
 
-resty provides inbuilt `404` and `HTTP` errors and `UnauthorizedError` Handling. if you want to implement your own error handling pass `handleErrors: false` to app config. 
-
-
+resty provides inbuilt `404` and `HTTP` errors and `UnauthorizedError` Handling. if you want to implement your own error handling pass `handleErrors: false` to app config.
 
 ## ORM / TypeORM
 
 install typeorm module
+
 ```sh
 npm install @restyjs/typeorm
 ```
@@ -322,9 +298,6 @@ const app = resty({
 #### Typeorm Docs
 
 For more info please refer to [typeorm](https://github.com/typeorm/typeorm) docs regarding database connections parameters and other orm features.
-
-
-
 
 ## Author
 
