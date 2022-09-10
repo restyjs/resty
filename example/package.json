@@ -14,7 +14,7 @@
     "@restyjs/typeorm": "*",
     "celebrate": "^15.0.0",
     "joi": "^17.5.0",
-    "sqlite3": "^5.0.2",
+    "sqlite3": "^5.0.3",
     "ts-node": "^10.4.0"
   }
 }
