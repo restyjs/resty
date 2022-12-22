@@ -19,6 +19,6 @@
   "dependencies": {
     "@restyjs/core": "*",
     "@types/jsonwebtoken": "^8.5.6",
-    "jsonwebtoken": "^8.5.1"
+    "jsonwebtoken": "^9.0.0"
   }
 }
