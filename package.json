@@ -1,54 +1,57 @@
 {
   "name": "resty",
-  "version": "1.0.7",
-  "description": "A Node.js framework",
+  "version": "2.0.0",
+  "description": "Fast, opinionated, minimalist and testable web framework built on Express.js with TypeScript decorators",
   "homepage": "https://restyjs.com",
   "private": true,
-  "workspaces": [
-    "packages/*",
-    "apps/*"
-  ],
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "scripts": {
     "build": "turbo run build",
-    "dev": "turbo run dev --no-cache --parallel --continue",
-    "lint": "turbo run lint",
+    "dev": "turbo run dev --parallel",
     "test": "turbo run test",
+    "test:watch": "turbo run test:watch",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
     "clean": "turbo run clean && rm -rf node_modules",
-    "format": "prettier --write \"**/*.{ts,tsx,md,json}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md,json}\"",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "turbo run build && changeset publish",
+    "prepare": "husky"
   },
   "devDependencies": {
-    "eslint": "^8.4.1",
-    "prettier": "^2.5.1",
-    "tsup": "^5.10.1",
-    "turbo": "latest",
-    "typescript": "^4.0.2"
+    "@changesets/cli": "^2.27.10",
+    "@eslint/js": "^9.39.2",
+    "@types/node": "^22.10.2",
+    "@typescript-eslint/eslint-plugin": "^8.18.2",
+    "@typescript-eslint/parser": "^8.18.2",
+    "eslint": "^9.17.0",
+    "globals": "^17.0.0",
+    "husky": "^9.1.7",
+    "prettier": "^3.4.2",
+    "tsup": "^8.3.5",
+    "tsx": "^4.7.0",
+    "turbo": "^2.3.3",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.51.0",
+    "vitest": "^2.1.8"
   },
-  "turbo": {
-    "pipeline": {
-      "build": {
-        "outputs": [
-          "dist/**",
-          ".next/**"
-        ],
-        "dependsOn": [
-          "^build"
-        ]
-      },
-      "test": {
-        "outputs": [
-          "coverage/**"
-        ],
-        "dependsOn": []
-      },
-      "lint": {
-        "outputs": []
-      },
-      "dev": {
-        "cache": false
-      },
-      "clean": {
-        "cache": false
-      }
-    }
-  }
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/restyjs/resty.git"
+  },
+  "keywords": [
+    "typescript",
+    "express",
+    "decorators",
+    "rest",
+    "api",
+    "framework",
+    "nodejs"
+  ],
+  "author": "Satish Babariya <satish.babariya@gmail.com>",
+  "license": "MIT"
 }

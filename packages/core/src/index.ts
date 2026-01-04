@@ -1,5 +1,6 @@
-import { resty } from "./resty";
-import {
+import "reflect-metadata";
+import { resty, RestyOptions } from "./resty";
+import type {
   Request,
   Response,
   NextFunction,
@@ -10,7 +11,38 @@ import {
 } from "express";
 import { Service, Container, Inject } from "typedi";
 
-export { Controller, ControllerMetadata } from "./decorators/Controller";
+// Core exports
+export { resty };
+export type { RestyOptions };
+export { Logger, LogLevel } from "./logger";
+export type { ILogger } from "./logger";
+export default resty;
+
+// Type inference and utilities
+export type {
+  TypedHandler,
+  TypedRequest,
+  TypedResponse,
+  RouteHandler,
+  ExtractParams,
+  TypedMethod,
+  InferResponse,
+  InferParams,
+  JSONValue,
+  JSONSafe,
+  ApiResponseType,
+  ApiErrorType,
+  ApiResult,
+  PaginatedList,
+  PaginationQuery,
+  IdParam,
+  SlugParam,
+} from "./types";
+export { defineHandler } from "./types";
+
+// Controller and HTTP method decorators
+export { Controller } from "./decorators/Controller";
+export type { ControllerMetadata } from "./decorators/Controller";
 export {
   Get,
   Post,
@@ -19,18 +51,104 @@ export {
   Options,
   Patch,
   Put,
+  All,
   HTTPMethod,
-  HTTPMethodMetadata,
 } from "./decorators/HttpMethods";
-export { Body } from "./decorators/Body";
-export { Query } from "./decorators/Query";
-export { Param } from "./decorators/Param";
-export { Context } from "./context";
-export { ValidationError, HTTPError } from "./errors";
-export { Provider } from "./provider";
-export { DefaultErrorHandler, NotFoundErrorHandler } from "./handlers";
+export type { HTTPMethodMetadata } from "./decorators/HttpMethods";
 
+// Parameter decorators
+export { Body } from "./decorators/Body";
+export { Query, Queries } from "./decorators/Query";
+export { Param, Params, Req, Res } from "./decorators/Param";
+export type { RequestParamMetadata, RequestParamType } from "./decorators/Param";
+export { Header, Headers } from "./decorators/Header";
+export { Cookie, Cookies } from "./decorators/Cookie";
+export { Session } from "./decorators/Session";
+export { File, Files } from "./decorators/File";
+
+// Response decorators
+export { HttpCode, Redirect, SetHeader } from "./decorators/Response";
+
+// Context and utilities
+export { Context } from "./context";
+export type { Provider } from "./provider";
+
+// Lifecycle hooks and interceptors
 export {
+  createHooksManager,
+  createInterceptorManager,
+  createInterceptorMiddleware,
+  requestTimingHook,
+  errorLoggingHook,
+} from "./hooks";
+export type {
+  HookContext,
+  OnRequestHook,
+  OnResponseHook,
+  OnErrorHook,
+  LifecycleHooks,
+  RequestInterceptor,
+  ResponseInterceptor,
+  Interceptors,
+} from "./hooks";
+
+// Response serialization
+export {
+  jsonSerializer,
+  dateSerializer,
+  bigIntSerializer,
+  wrapResponse,
+  transformResponse,
+  paginate,
+  exclude,
+  pick,
+} from "./serialization";
+export type {
+  ResponseSerializer,
+  TransformOptions,
+  ApiResponse,
+  PaginatedResponse,
+} from "./serialization";
+
+// Health checks and graceful shutdown
+export {
+  healthCheck,
+  livenessProbe,
+  readinessProbe,
+  gracefulShutdown,
+  shutdownMiddleware,
+} from "./health";
+export type {
+  HealthStatus,
+  HealthCheckResult,
+  HealthCheck,
+  HealthCheckConfig,
+  GracefulShutdownOptions,
+} from "./health";
+
+// Error classes
+export {
+  Exception,
+  HTTPError,
+  BadRequestError,
+  UnauthorizedError,
+  ForbiddenError,
+  NotFoundError,
+  ConflictError,
+  ValidationError,
+  TooManyRequestsError,
+  InternalServerError,
+} from "./errors";
+
+// Built-in handlers
+export {
+  DefaultErrorHandler,
+  NotFoundErrorHandler,
+  RequestLogger,
+} from "./handlers";
+
+// Re-export from Express for convenience
+export type {
   Request,
   Response,
   NextFunction,
@@ -39,6 +157,6 @@ export {
   Router,
   Application,
 };
-export { Service, Container, Inject };
 
-export default resty;
+// Re-export from TypeDI for dependency injection
+export { Service, Container, Inject };

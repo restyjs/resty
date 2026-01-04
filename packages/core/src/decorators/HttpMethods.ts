@@ -1,6 +1,9 @@
+import type { RequestHandler } from "express";
 import { MetadataKeys } from "../metadataKeys";
-import express from "express";
 
+/**
+ * Supported HTTP methods
+ */
 export enum HTTPMethod {
   get = "get",
   post = "post",
@@ -12,78 +15,120 @@ export enum HTTPMethod {
   all = "all",
 }
 
+/**
+ * Metadata for an HTTP method decorator
+ */
 export interface HTTPMethodMetadata {
   path: string;
   method: HTTPMethod;
-  middlewares: express.RequestHandler[];
+  middlewares: RequestHandler[];
   propertyKey: string;
-  arguments: any[];
+  arguments: unknown[];
 }
 
-function httpMethod(
+/**
+ * Creates an HTTP method decorator factory
+ */
+function createMethodDecorator(
   path: string,
   method: HTTPMethod,
-  middlewares: express.RequestHandler[] = []
-) {
+  middlewares: RequestHandler[] = []
+): MethodDecorator {
   return function (
-    target: any,
-    propertyKey: string,
-    descriptor: PropertyDescriptor
+    target: object,
+    propertyKey: string | symbol,
+    _descriptor: PropertyDescriptor
   ) {
-    var arrHttpMethodMetada: HTTPMethodMetadata[] =
-      Reflect.getMetadata(MetadataKeys.httpMethod, target.constructor) ?? [];
+    const constructor = target.constructor;
 
-    // Append / if not exist in path
-    if (!path.startsWith("/")) {
-      path = "/" + path;
-    }
+    // Get existing method metadata or initialize empty array
+    const existingMetadata: HTTPMethodMetadata[] =
+      Reflect.getMetadata(MetadataKeys.httpMethod, constructor) ?? [];
+
+    // Normalize path
+    const normalizedPath = String(path).startsWith("/") ? path : `/${path}`;
 
     const metadata: HTTPMethodMetadata = {
-      path,
+      path: normalizedPath,
       method,
       middlewares,
-      propertyKey,
-      arguments: Reflect.getMetadata("design:paramtypes", target, propertyKey),
+      propertyKey: String(propertyKey),
+      arguments: Reflect.getMetadata("design:paramtypes", target, propertyKey) ?? [],
     };
 
-    arrHttpMethodMetada.push(metadata);
-
-    Reflect.defineMetadata(
-      MetadataKeys.httpMethod,
-      arrHttpMethodMetada,
-      target.constructor
-    );
+    existingMetadata.push(metadata);
+    Reflect.defineMetadata(MetadataKeys.httpMethod, existingMetadata, constructor);
   };
 }
 
-export function Get(path: string, middlewares?: express.RequestHandler[]) {
-  return httpMethod(path, HTTPMethod.get, middlewares);
+/**
+ * Handle GET requests
+ *
+ * @example
+ * ```typescript
+ * @Get("/users")
+ * async getUsers() {
+ *   return await User.findAll();
+ * }
+ * ```
+ */
+export function Get(path: string, middlewares?: RequestHandler[]): MethodDecorator {
+  return createMethodDecorator(path, HTTPMethod.get, middlewares);
 }
 
-export function Post(path: string, middlewares?: express.RequestHandler[]) {
-  return httpMethod(path, HTTPMethod.post, middlewares);
+/**
+ * Handle POST requests
+ *
+ * @example
+ * ```typescript
+ * @Post("/users")
+ * async createUser(@Body() data: CreateUserDto) {
+ *   return await User.create(data);
+ * }
+ * ```
+ */
+export function Post(path: string, middlewares?: RequestHandler[]): MethodDecorator {
+  return createMethodDecorator(path, HTTPMethod.post, middlewares);
 }
 
-export function Put(path: string, middlewares?: express.RequestHandler[]) {
-  return httpMethod(path, HTTPMethod.put, middlewares);
+/**
+ * Handle PUT requests
+ */
+export function Put(path: string, middlewares?: RequestHandler[]): MethodDecorator {
+  return createMethodDecorator(path, HTTPMethod.put, middlewares);
 }
 
-export function Delete(path: string, middlewares?: express.RequestHandler[]) {
-  return httpMethod(path, HTTPMethod.delete, middlewares);
+/**
+ * Handle DELETE requests
+ */
+export function Delete(path: string, middlewares?: RequestHandler[]): MethodDecorator {
+  return createMethodDecorator(path, HTTPMethod.delete, middlewares);
 }
 
-export function Patch(path: string, middlewares?: express.RequestHandler[]) {
-  return httpMethod(path, HTTPMethod.patch, middlewares);
+/**
+ * Handle PATCH requests
+ */
+export function Patch(path: string, middlewares?: RequestHandler[]): MethodDecorator {
+  return createMethodDecorator(path, HTTPMethod.patch, middlewares);
 }
 
-export function Options(path: string, middlewares?: express.RequestHandler[]) {
-  return httpMethod(path, HTTPMethod.options, middlewares);
+/**
+ * Handle OPTIONS requests
+ */
+export function Options(path: string, middlewares?: RequestHandler[]): MethodDecorator {
+  return createMethodDecorator(path, HTTPMethod.options, middlewares);
 }
 
-export function Head(path: string, middlewares?: express.RequestHandler[]) {
-  return httpMethod(path, HTTPMethod.head, middlewares);
+/**
+ * Handle HEAD requests
+ */
+export function Head(path: string, middlewares?: RequestHandler[]): MethodDecorator {
+  return createMethodDecorator(path, HTTPMethod.head, middlewares);
 }
 
-export function All(path: string, middlewares?: express.RequestHandler[]) {
-  return httpMethod(path, HTTPMethod.all, middlewares);
+/**
+ * Handle all HTTP methods
+ */
+export function All(path: string, middlewares?: RequestHandler[]): MethodDecorator {
+  return createMethodDecorator(path, HTTPMethod.all, middlewares);
 }

@@ -1,0 +1,20 @@
+{
+    "name": "resty-app",
+    "version": "1.0.0",
+    "description": "My Resty.js Application",
+    "main": "dist/index.js",
+    "scripts": {
+        "dev": "resty dev",
+        "build": "tsc",
+        "start": "node dist/index.js"
+    },
+    "dependencies": {
+        "@restyjs/core": "latest",
+        "reflect-metadata": "^0.2.0"
+    },
+    "devDependencies": {
+        "@restyjs/cli": "latest",
+        "@types/node": "^20.0.0",
+        "typescript": "^5.0.0"
+    }
+}

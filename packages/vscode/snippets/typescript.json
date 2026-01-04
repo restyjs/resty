@@ -1,0 +1,53 @@
+{
+    "Resty Controller": {
+        "prefix": "resty-controller",
+        "body": [
+            "import { Controller, Get, Post, Body, Param } from '@restyjs/core';",
+            "import { Service } from 'typedi';",
+            "",
+            "@Service()",
+            "@Controller('/${1:path}')",
+            "export class ${2:Name}Controller {",
+            "  constructor() {}",
+            "",
+            "  @Get('/')",
+            "  async index() {",
+            "    return 'Hello World';",
+            "  }",
+            "}"
+        ],
+        "description": "Create a new Resty Controller"
+    },
+    "Resty Service": {
+        "prefix": "resty-service",
+        "body": [
+            "import { Service } from 'typedi';",
+            "",
+            "@Service()",
+            "export class ${1:Name}Service {",
+            "  constructor() {}",
+            "}"
+        ],
+        "description": "Create a new Resty Service"
+    },
+    "Resty GET Handler": {
+        "prefix": "resty-get",
+        "body": [
+            "@Get('/${1:path}')",
+            "async ${2:methodName}() {",
+            "  return ${3:result};",
+            "}"
+        ],
+        "description": "Create a GET route handler"
+    },
+    "Resty POST Handler": {
+        "prefix": "resty-post",
+        "body": [
+            "@Post('/${1:path}')",
+            "async ${2:methodName}(@Body() body: ${3:any}) {",
+            "  return body;",
+            "}"
+        ],
+        "description": "Create a POST route handler"
+    }
+}
