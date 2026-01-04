@@ -10,7 +10,8 @@
     "types": "./dist/index.d.ts",
     "files": [
         "dist",
-        "bin"
+        "bin",
+        "templates"
     ],
     "scripts": {
         "build": "tsup",
@@ -29,17 +30,21 @@
     "author": "Satish Babariya",
     "license": "MIT",
     "dependencies": {
-        "commander": "^12.0.0",
         "chokidar": "^3.6.0",
+        "commander": "^12.0.0",
+        "fs-extra": "^11.3.3",
         "picocolors": "^1.0.0",
+        "prompts": "^2.4.2",
         "tsx": "^4.7.0"
     },
     "devDependencies": {
+        "@types/fs-extra": "^11.0.4",
         "@types/node": "^20.0.0",
+        "@types/prompts": "^2.4.9",
+        "eslint": "^9.0.0",
         "tsup": "^8.0.0",
         "typescript": "^5.0.0",
-        "vitest": "^1.0.0",
-        "eslint": "^9.0.0"
+        "vitest": "^1.0.0"
     },
     "publishConfig": {
         "access": "public"
