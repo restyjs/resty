@@ -16,6 +16,28 @@ export { resty };
 export type { RestyOptions };
 export default resty;
 
+// Type inference and utilities
+export type {
+  TypedHandler,
+  TypedRequest,
+  TypedResponse,
+  RouteHandler,
+  ExtractParams,
+  TypedMethod,
+  InferResponse,
+  InferParams,
+  JSONValue,
+  JSONSafe,
+  ApiResponseType,
+  ApiErrorType,
+  ApiResult,
+  PaginatedList,
+  PaginationQuery,
+  IdParam,
+  SlugParam,
+} from "./types";
+export { defineHandler } from "./types";
+
 // Controller and HTTP method decorators
 export { Controller } from "./decorators/Controller";
 export type { ControllerMetadata } from "./decorators/Controller";
