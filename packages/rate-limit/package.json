@@ -1,6 +1,6 @@
 {
     "name": "@restyjs/rate-limit",
-    "version": "2.0.0",
+    "version": "3.0.0",
     "description": "Rate limiting middleware for Resty.js applications",
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",

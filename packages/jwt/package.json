@@ -1,6 +1,6 @@
 {
   "name": "@restyjs/jwt",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "JWT authentication provider for Resty.js",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

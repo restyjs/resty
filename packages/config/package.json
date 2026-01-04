@@ -1,6 +1,6 @@
 {
   "name": "@restyjs/config",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Configuration provider for Resty.js with dotenv support",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

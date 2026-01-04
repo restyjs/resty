@@ -1,6 +1,6 @@
 {
     "name": "@restyjs/cli",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "description": "CLI for Resty.js framework",
     "bin": {
         "resty": "./bin/run"

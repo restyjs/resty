@@ -1,6 +1,6 @@
 {
     "name": "@restyjs/cache",
-    "version": "2.0.0",
+    "version": "3.0.0",
     "description": "Caching middleware and utilities for Resty.js applications",
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",
