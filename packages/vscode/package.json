@@ -1,0 +1,27 @@
+{
+    "name": "vscode-resty",
+    "displayName": "Resty.js Snippets",
+    "description": "Code snippets for Resty.js framework",
+    "version": "1.0.0",
+    "publisher": "restyjs",
+    "engines": {
+        "vscode": "^1.80.0"
+    },
+    "categories": [
+        "Snippets"
+    ],
+    "contributes": {
+        "snippets": [
+            {
+                "language": "typescript",
+                "path": "./snippets/typescript.json"
+            }
+        ]
+    },
+    "keywords": [
+        "resty",
+        "express",
+        "decorators",
+        "snippets"
+    ]
+}

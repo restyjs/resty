@@ -5,12 +5,16 @@ import { resty, Controller, Get } from "@restyjs/core";
 class HelloController {
     @Get("/")
     index() {
-        return "Hello from Resty CLI!";
+        return { message: "Hello from Resty CLI!" };
     }
 }
 
 const app = resty({
-    controllers: [HelloController]
+    controllers: [HelloController],
+    debug: true,
+    cors: true,
+    helmet: true,
+    compression: true
 });
 
 app.listen(3000, () => {

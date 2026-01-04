@@ -19,6 +19,9 @@ import { Context } from "./context";
 import { Provider } from "./provider";
 import { Logger } from "./logger";
 import { createHooksManager } from "./hooks";
+import type { CorsOptions } from "cors";
+import type { HelmetOptions } from "helmet";
+import type { CompressionOptions } from "compression";
 
 type Middleware = RequestHandler | ErrorRequestHandler;
 
@@ -26,6 +29,11 @@ type Middleware = RequestHandler | ErrorRequestHandler;
  * Configuration options for creating a Resty application
  */
 export interface RestyOptions {
+  // ... existing options ...
+  cors?: boolean | CorsOptions;
+  helmet?: boolean | HelmetOptions;
+  compression?: boolean | CompressionOptions;
+
   /** Existing Express application instance to use */
   app?: ExpressApplication;
   /** Existing Express router to use */
@@ -131,6 +139,7 @@ class Application {
       }
 
       // Initialize middlewares
+      this.initSecurityMiddlewares();
       this.initTrustProxy();
       this.initBodyParser();
 
@@ -244,6 +253,44 @@ class Application {
       this.logger.debug(`Registering ${this.options.middlewares.length} pre-middlewares`);
       for (const middleware of this.options.middlewares) {
         this.app.use(middleware as RequestHandler);
+      }
+    }
+  }
+
+  private initSecurityMiddlewares(): void {
+    // Helmet
+    if (this.options.helmet) {
+      try {
+        const helmet = require("helmet");
+        const options = typeof this.options.helmet === "boolean" ? {} : this.options.helmet;
+        this.app.use(helmet(options));
+        this.logger.debug("Helmet middleware enabled");
+      } catch (error) {
+        this.logger.warn("Helmet enabled but package not found. Install 'helmet' to use it.");
+      }
+    }
+
+    // CORS
+    if (this.options.cors) {
+      try {
+        const cors = require("cors");
+        const options = typeof this.options.cors === "boolean" ? {} : this.options.cors;
+        this.app.use(cors(options));
+        this.logger.debug("CORS middleware enabled");
+      } catch (error) {
+        this.logger.warn("CORS enabled but package not found. Install 'cors' to use it.");
+      }
+    }
+
+    // Compression
+    if (this.options.compression) {
+      try {
+        const compression = require("compression");
+        const options = typeof this.options.compression === "boolean" ? {} : this.options.compression;
+        this.app.use(compression(options));
+        this.logger.debug("Compression middleware enabled");
+      } catch (error) {
+        this.logger.warn("Compression enabled but package not found. Install 'compression' to use it.");
       }
     }
   }
