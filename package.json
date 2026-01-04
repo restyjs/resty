@@ -19,7 +19,8 @@
     "format": "prettier --write \"**/*.{ts,tsx,md,json}\"",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release": "turbo run build && changeset publish"
+    "release": "turbo run build && changeset publish",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.10",
@@ -29,6 +30,7 @@
     "@typescript-eslint/parser": "^8.18.2",
     "eslint": "^9.17.0",
     "globals": "^17.0.0",
+    "husky": "^9.1.7",
     "prettier": "^3.4.2",
     "tsup": "^8.3.5",
     "tsx": "^4.7.0",

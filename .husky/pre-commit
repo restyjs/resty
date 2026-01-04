@@ -1,0 +1,1 @@
+pnpm turbo run build lint typecheck test
