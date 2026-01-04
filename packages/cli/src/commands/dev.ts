@@ -41,7 +41,7 @@ export const devCommand = new Command("dev")
             ignored: ["**/node_modules/**", "**/.git/**", "**/dist/**"]
         });
 
-        watcher.on("all", (event, filePath) => {
+        watcher.on("all", (_event, filePath) => {
             console.log(pc.dim(`[resty] File changed: ${path.relative(process.cwd(), filePath)}`));
             console.log(pc.yellow("↻"), "Restarting...");
             startApp();

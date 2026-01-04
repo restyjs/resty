@@ -6,5 +6,6 @@ export default defineConfig({
     dts: true,
     clean: true,
     sourcemap: true,
+    shims: true,
     external: ["commander", "chokidar", "picocolors", "tsx"]
 });

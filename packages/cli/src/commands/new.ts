@@ -2,7 +2,7 @@ import { Command } from "commander";
 import prompts from "prompts";
 import fs from "fs-extra";
 import path from "path";
-import { fileURLToPath } from "url";
+
 
 export const newCommand = new Command()
     .command("new [name]")
@@ -33,7 +33,7 @@ export const newCommand = new Command()
 
         console.log(`Creating project in ${targetDir}...`);
 
-        const __dirname = path.dirname(fileURLToPath(import.meta.url));
+        // __dirname will be shimmed by tsup
         let templatePath = path.resolve(__dirname, "../templates/basic");
 
         // Check if we are in dev/src environment

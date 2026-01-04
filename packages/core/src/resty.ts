@@ -112,8 +112,9 @@ class Application {
     // Add morgan if requested
     if (this.options.logger) {
       try {
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
         this.app.use(require("morgan")("dev"));
-      } catch (error) {
+      } catch (_error) {
         this.logger.warn("Morgan logger not found. Install 'morgan' to enable access logging.");
       }
     }
@@ -149,7 +150,7 @@ class Application {
 
       // Add request context middleware
       this.app.use((req, _res, next) => {
-        // @ts-ignore
+        // @ts-expect-error -- req.id is explicitly added
         req.id = Math.random().toString(36).substring(7);
         next();
       });
@@ -170,7 +171,7 @@ class Application {
       // Register request hooks (before controllers)
       this.app.use((req, res, _next) => {
         const startTime = Date.now();
-        // @ts-ignore
+        // @ts-expect-error -- internal property
         req._resty_startTime = startTime;
 
         this.hookManager.runOnRequest({
@@ -266,11 +267,12 @@ class Application {
     // Helmet
     if (this.options.helmet) {
       try {
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
         const helmet = require("helmet");
         const options = typeof this.options.helmet === "boolean" ? {} : this.options.helmet;
         this.app.use(helmet(options));
         this.logger.debug("Helmet middleware enabled");
-      } catch (error) {
+      } catch (_error) {
         this.logger.warn("Helmet enabled but package not found. Install 'helmet' to use it.");
       }
     }
@@ -278,11 +280,12 @@ class Application {
     // CORS
     if (this.options.cors) {
       try {
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
         const cors = require("cors");
         const options = typeof this.options.cors === "boolean" ? {} : this.options.cors;
         this.app.use(cors(options));
         this.logger.debug("CORS middleware enabled");
-      } catch (error) {
+      } catch (_error) {
         this.logger.warn("CORS enabled but package not found. Install 'cors' to use it.");
       }
     }
@@ -290,11 +293,12 @@ class Application {
     // Compression
     if (this.options.compression) {
       try {
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
         const compression = require("compression");
         const options = typeof this.options.compression === "boolean" ? {} : this.options.compression;
         this.app.use(compression(options));
         this.logger.debug("Compression middleware enabled");
-      } catch (error) {
+      } catch (_error) {
         this.logger.warn("Compression enabled but package not found. Install 'compression' to use it.");
       }
     }
