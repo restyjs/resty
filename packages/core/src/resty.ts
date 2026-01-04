@@ -402,7 +402,14 @@ class Application {
           metadata.propertyKey
         ] as (...args: unknown[]) => unknown;
 
-        const result = await method.apply(controllerInstance, args);
+        let result = await method.apply(controllerInstance, args);
+
+        // Apply response interceptors if configured
+        if (this.options.responseInterceptors) {
+          for (const interceptor of this.options.responseInterceptors) {
+            result = await interceptor(result, req, res);
+          }
+        }
 
         // Execute onResponse hooks
         const startTime = (req as any)._resty_startTime || Date.now();
@@ -524,6 +531,10 @@ class Application {
           : (req as unknown as { cookies: Record<string, unknown> }).cookies;
       case "cookies":
         return (req as unknown as { cookies: Record<string, unknown> }).cookies;
+      case "session":
+        return param.name
+          ? (req as unknown as { session?: Record<string, unknown> }).session?.[param.name]
+          : (req as unknown as { session?: Record<string, unknown> }).session;
       case "request":
         return req;
       case "response":
