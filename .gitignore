@@ -6,6 +6,11 @@ node_modules/
 dist/
 *.tsbuildinfo
 
+# Accidental build output in src
+packages/*/src/**/*.js
+packages/*/src/**/*.js.map
+packages/*/src/**/*.d.ts
+
 # Test coverage
 coverage/
 .nyc_output/
