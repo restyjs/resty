@@ -172,7 +172,7 @@ class Application {
       this.app.use((req, res, _next) => {
         const startTime = Date.now();
         // @ts-expect-error -- internal property
-        req._resty_startTime = startTime;
+        req._startTime = startTime;
 
         this.hookManager.runOnRequest({
           req,
