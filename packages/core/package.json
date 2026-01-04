@@ -1,28 +1,64 @@
 {
   "name": "@restyjs/core",
-  "version": "1.0.0",
+  "version": "2.0.0",
+  "description": "Fast, opinionated, minimalist and testable web framework built on Express.js with TypeScript decorators",
   "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    }
+  },
   "license": "MIT",
   "sideEffects": true,
   "files": [
     "dist/**"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --dts",
-    "lint": "TIMING=1 eslint src --fix",
-    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "clean": "rm -rf .turbo node_modules dist"
   },
   "publishConfig": {
     "access": "public"
   },
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "dependencies": {
-    "@types/body-parser": "^1.19.2",
-    "@types/express": "^4.17.13",
-    "@types/node": "^17.0.0",
-    "body-parser": "^1.19.1",
-    "express": "^4.17.2",
-    "reflect-metadata": "^0.1.13",
+    "reflect-metadata": "^0.2.2",
     "typedi": "^0.10.0"
-  }
+  },
+  "peerDependencies": {
+    "express": "^4.21.0 || ^5.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.2",
+    "express": "^4.21.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "keywords": [
+    "typescript",
+    "express",
+    "decorators",
+    "rest",
+    "api",
+    "framework",
+    "controller",
+    "routing"
+  ]
 }

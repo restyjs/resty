@@ -1,5 +1,6 @@
-import { resty } from "./resty";
-import {
+import "reflect-metadata";
+import { resty, RestyOptions } from "./resty";
+import type {
   Request,
   Response,
   NextFunction,
@@ -10,7 +11,14 @@ import {
 } from "express";
 import { Service, Container, Inject } from "typedi";
 
-export { Controller, ControllerMetadata } from "./decorators/Controller";
+// Core exports
+export { resty };
+export type { RestyOptions };
+export default resty;
+
+// Controller and HTTP method decorators
+export { Controller } from "./decorators/Controller";
+export type { ControllerMetadata } from "./decorators/Controller";
 export {
   Get,
   Post,
@@ -19,18 +27,49 @@ export {
   Options,
   Patch,
   Put,
+  All,
   HTTPMethod,
-  HTTPMethodMetadata,
 } from "./decorators/HttpMethods";
-export { Body } from "./decorators/Body";
-export { Query } from "./decorators/Query";
-export { Param } from "./decorators/Param";
-export { Context } from "./context";
-export { ValidationError, HTTPError } from "./errors";
-export { Provider } from "./provider";
-export { DefaultErrorHandler, NotFoundErrorHandler } from "./handlers";
+export type { HTTPMethodMetadata } from "./decorators/HttpMethods";
 
+// Parameter decorators
+export { Body } from "./decorators/Body";
+export { Query, Queries } from "./decorators/Query";
+export { Param, Params, Req, Res } from "./decorators/Param";
+export type { RequestParamMetadata, RequestParamType } from "./decorators/Param";
+export { Header, Headers } from "./decorators/Header";
+export { Cookie, Cookies } from "./decorators/Cookie";
+
+// Response decorators
+export { HttpCode, Redirect, SetHeader } from "./decorators/Response";
+
+// Context and utilities
+export { Context } from "./context";
+export type { Provider } from "./provider";
+
+// Error classes
 export {
+  Exception,
+  HTTPError,
+  BadRequestError,
+  UnauthorizedError,
+  ForbiddenError,
+  NotFoundError,
+  ConflictError,
+  ValidationError,
+  TooManyRequestsError,
+  InternalServerError,
+} from "./errors";
+
+// Built-in handlers
+export {
+  DefaultErrorHandler,
+  NotFoundErrorHandler,
+  RequestLogger,
+} from "./handlers";
+
+// Re-export from Express for convenience
+export type {
   Request,
   Response,
   NextFunction,
@@ -39,6 +78,6 @@ export {
   Router,
   Application,
 };
-export { Service, Container, Inject };
 
-export default resty;
+// Re-export from TypeDI for dependency injection
+export { Service, Container, Inject };

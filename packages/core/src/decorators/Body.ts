@@ -1,31 +1,49 @@
 import { MetadataKeys } from "../metadataKeys";
 import { RequestParamMetadata } from "./Param";
 
-export function Body() {
-  return function (target: Object, propertyKey: string, index: number) {
-    let arrParamMetada: RequestParamMetadata[] =
+/**
+ * Extract the request body and inject it as a parameter
+ *
+ * @example
+ * ```typescript
+ * @Post("/users")
+ * create(@Body() user: CreateUserDto) {
+ *   return this.userService.create(user);
+ * }
+ * ```
+ */
+export function Body(): ParameterDecorator {
+  return function (
+    target: object,
+    propertyKey: string | symbol | undefined,
+    parameterIndex: number
+  ) {
+    if (propertyKey === undefined) return;
+
+    const existingMetadata: RequestParamMetadata[] =
       Reflect.getOwnMetadata(
         MetadataKeys.param,
         target.constructor,
         propertyKey
-      ) || [];
+      ) ?? [];
+
+    const paramTypes =
+      Reflect.getMetadata("design:paramtypes", target, propertyKey) ?? [];
 
     const metadata: RequestParamMetadata = {
       target,
       paramType: "body",
-      propertyKey,
-      index,
-      type: Reflect.getMetadata("design:paramtypes", target, propertyKey)[
-        index
-      ],
+      propertyKey: String(propertyKey),
+      index: parameterIndex,
+      type: paramTypes[parameterIndex],
       parse: false,
     };
 
-    arrParamMetada.push(metadata);
+    existingMetadata.push(metadata);
 
     Reflect.defineMetadata(
       MetadataKeys.param,
-      arrParamMetada,
+      existingMetadata,
       target.constructor,
       propertyKey
     );

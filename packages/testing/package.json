@@ -1,0 +1,61 @@
+{
+    "name": "@restyjs/testing",
+    "version": "2.0.0",
+    "description": "Testing utilities for Resty.js applications",
+    "main": "./dist/index.js",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "import": {
+                "types": "./dist/index.d.mts",
+                "default": "./dist/index.mjs"
+            },
+            "require": {
+                "types": "./dist/index.d.ts",
+                "default": "./dist/index.js"
+            }
+        }
+    },
+    "license": "MIT",
+    "sideEffects": false,
+    "files": [
+        "dist/**"
+    ],
+    "scripts": {
+        "build": "tsup",
+        "dev": "tsup --watch",
+        "lint": "eslint src",
+        "typecheck": "tsc --noEmit",
+        "test": "vitest run",
+        "test:watch": "vitest",
+        "clean": "rm -rf .turbo node_modules dist"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "engines": {
+        "node": ">=20.0.0"
+    },
+    "peerDependencies": {
+        "@restyjs/core": "^2.0.0"
+    },
+    "dependencies": {
+        "supertest": "^7.0.0"
+    },
+    "devDependencies": {
+        "@restyjs/core": "workspace:*",
+        "@types/express": "^5.0.0",
+        "@types/node": "^22.10.2",
+        "@types/supertest": "^6.0.2",
+        "express": "^4.21.2",
+        "typescript": "^5.7.2",
+        "vitest": "^2.1.8"
+    },
+    "keywords": [
+        "resty",
+        "testing",
+        "supertest",
+        "api"
+    ]
+}

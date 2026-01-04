@@ -1,23 +1,60 @@
 {
   "name": "@restyjs/typeorm",
-  "version": "1.0.0",
+  "version": "2.0.0",
+  "description": "TypeORM integration for Resty.js",
   "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    }
+  },
   "license": "MIT",
   "sideEffects": false,
   "files": [
     "dist/**"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --dts",
-    "lint": "TIMING=1 eslint src --fix",
-    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "clean": "rm -rf .turbo node_modules dist"
   },
   "publishConfig": {
     "access": "public"
   },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "peerDependencies": {
+    "@restyjs/core": "^2.0.0",
+    "typeorm": "^0.3.0"
+  },
   "dependencies": {
-    "@restyjs/core": "*",
-    "typeorm": "^0.2.41"
-  }
+    "typedi": "^0.10.0"
+  },
+  "devDependencies": {
+    "@restyjs/core": "workspace:*",
+    "@types/node": "^22.10.2",
+    "typeorm": "^0.3.20",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "keywords": [
+    "resty",
+    "typeorm",
+    "orm",
+    "database"
+  ]
 }

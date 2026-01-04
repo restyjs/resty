@@ -1,28 +1,48 @@
+import type { RouterOptions, RequestHandler } from "express";
 import { MetadataKeys } from "../metadataKeys";
-import express from "express";
 
+/**
+ * Controller metadata stored via reflection
+ */
 export interface ControllerMetadata {
   path: string;
-  middlewares: express.RequestHandler[];
-  options?: express.RouterOptions;
+  middlewares: RequestHandler[];
+  options?: RouterOptions;
 }
 
+/**
+ * Marks a class as a controller that can handle HTTP requests
+ *
+ * @param path - Base path for all routes in this controller
+ * @param middlewares - Optional middleware to apply to all routes
+ * @param options - Optional Express router options
+ *
+ * @example
+ * ```typescript
+ * @Controller("/users")
+ * class UserController {
+ *   @Get("/")
+ *   list() {
+ *     return [];
+ *   }
+ * }
+ * ```
+ */
 export function Controller(
   path: string,
-  middlewares: express.RequestHandler[] = [],
-  options?: express.RouterOptions
-) {
-  return function (target: any) {
-    // Append / if not exist in path
-    if (!path.startsWith("/")) {
-      path = "/" + path;
-    }
+  middlewares: RequestHandler[] = [],
+  options?: RouterOptions
+): ClassDecorator {
+  return function (target) {
+    // Normalize path to always start with /
+    const normalizedPath = path.startsWith("/") ? path : `/${path}`;
 
     const metadata: ControllerMetadata = {
-      path: path,
-      middlewares: middlewares,
-      options: options,
+      path: normalizedPath,
+      middlewares,
+      options,
     };
+
     Reflect.defineMetadata(MetadataKeys.controller, metadata, target);
   };
 }
