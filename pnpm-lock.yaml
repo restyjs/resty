@@ -107,6 +107,28 @@ importers:
         specifier: ^5.0.0
         version: 5.9.3
 
+  examples/observability:
+    dependencies:
+      '@restyjs/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      reflect-metadata:
+        specifier: ^0.2.2
+        version: 0.2.2
+      typedi:
+        specifier: ^0.10.0
+        version: 0.10.0
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.27
+      ts-node:
+        specifier: ^10.9.2
+        version: 10.9.2(@types/node@20.19.27)(typescript@5.9.3)
+      typescript:
+        specifier: ^5.0.0
+        version: 5.9.3
+
   packages/argon2:
     dependencies:
       argon2:

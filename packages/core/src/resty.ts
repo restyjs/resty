@@ -18,7 +18,7 @@ import { RequestParamMetadata } from "./decorators/Param";
 import { Context } from "./context";
 import { Provider } from "./provider";
 import { Logger } from "./logger";
-import { createHooksManager } from "./hooks";
+import { createHooksManager, OnRequestHook, OnResponseHook, OnErrorHook } from "./hooks";
 import type { CorsOptions } from "cors";
 import type { HelmetOptions } from "helmet";
 import type { CompressionOptions } from "compression";
@@ -65,25 +65,27 @@ export interface RestyOptions {
   /** Container implementation */
   container?: typeof Container;
   /** Lifecycle hooks */
+  /** Lifecycle hooks */
   hooks?: {
-    onRequest?: Array<(req: Request, res: Response) => void | Promise<void>>;
-    onResponse?: Array<(req: Request, res: Response, result: unknown) => void | Promise<void>>;
-    onError?: Array<(error: Error, req: Request, res: Response) => void | Promise<void>>;
+    onRequest?: OnRequestHook[];
+    onResponse?: OnResponseHook[];
+    onError?: OnErrorHook[];
   };
   /** Response interceptors - transform response before sending */
   responseInterceptors?: Array<(result: unknown, req: Request, res: Response) => unknown | Promise<unknown>>;
 }
 
 interface InternalHooks {
-  onRequest: Array<(req: Request, res: Response) => void | Promise<void>>;
-  onResponse: Array<(req: Request, res: Response, result: unknown) => void | Promise<void>>;
-  onError: Array<(error: Error, req: Request, res: Response) => void | Promise<void>>;
+  onRequest: OnRequestHook[];
+  onResponse: OnResponseHook[];
+  onError: OnErrorHook[];
 }
 
 class Application {
   public logger: Logger;
   private readonly hooks: InternalHooks;
-
+  private hookManager: ReturnType<typeof createHooksManager>;
+  public container: typeof Container;
   constructor(
     private readonly app: ExpressApplication,
     private readonly router: Router,
@@ -91,7 +93,9 @@ class Application {
     private readonly providers: Provider[],
     private readonly options: RestyOptions
   ) {
-    this.logger = new Logger(options.debug || process.env.RESTY_DEBUG === "true");
+    this.logger = new Logger(options.debug);
+    this.hookManager = createHooksManager();
+    this.container = options.container || Container;
 
     this.hooks = {
       onRequest: options.hooks?.onRequest || [],
@@ -152,26 +156,27 @@ class Application {
 
       this.initPreMiddlewares();
 
-      // Initialize hook manager
-      const hookManager = createHooksManager();
-      // Register configured hooks
       // Register configured hooks
       this.hooks.onRequest.forEach(h => {
-        hookManager.addOnRequest(ctx => h(ctx.req, ctx.res));
+        this.hookManager.addOnRequest(h);
       });
       this.hooks.onResponse.forEach(h => {
-        hookManager.addOnResponse((ctx, res) => h(ctx.req, ctx.res, res));
+        this.hookManager.addOnResponse(h);
       });
       this.hooks.onError.forEach(h => {
-        hookManager.addOnError((ctx, err) => h(err, ctx.req, ctx.res));
+        this.hookManager.addOnError(h);
       });
 
       // Register request hooks (before controllers)
       this.app.use((req, res, _next) => {
-        hookManager.runOnRequest({
+        const startTime = Date.now();
+        // @ts-ignore
+        req._resty_startTime = startTime;
+
+        this.hookManager.runOnRequest({
           req,
           res,
-          startTime: Date.now()
+          startTime
         }).then(() => _next()).catch(_next);
       });
 
@@ -195,7 +200,7 @@ class Application {
           };
 
           // Execute error hooks
-          hookManager.runOnError(ctx, error)
+          this.hookManager.runOnError(ctx, error)
             .then(() => {
               // Default error handling logic if not handled by hooks (i.e. if response not sent)
               if (!res.headersSent) {
@@ -388,12 +393,26 @@ class Application {
     return async (req: Request, res: Response, next: NextFunction) => {
       try {
         const args = this.resolveArguments(controller, metadata, req, res, next);
-        const controllerInstance = Container.get(controller as new () => unknown);
+        const controllerInstance = this.container.get(controller as new () => unknown);
         const method = (controllerInstance as Record<string, unknown>)[
           metadata.propertyKey
         ] as (...args: unknown[]) => unknown;
 
         const result = await method.apply(controllerInstance, args);
+
+        // Execute onResponse hooks
+        const startTime = (req as any)._resty_startTime || Date.now();
+        const hookCtx = {
+          req,
+          res,
+          startTime,
+          controller: (controller as any).name,
+          method: metadata.propertyKey,
+          path: metadata.path,
+          httpMethod: metadata.method
+        };
+
+        await this.hookManager.runOnResponse(hookCtx, result);
 
         // Check for custom status code
         const statusCode: number | undefined = Reflect.getMetadata(
@@ -419,7 +438,20 @@ class Application {
         } else {
           res.send(result);
         }
-      } catch (error) {
+      } catch (error: any) {
+        // Execute onError hooks for route errors
+        const startTime = (req as any)._resty_startTime || Date.now();
+        const hookCtx = {
+          req,
+          res,
+          startTime,
+          controller: (controller as any).name,
+          method: metadata.propertyKey,
+          path: metadata.path,
+          httpMethod: metadata.method
+        };
+        await this.hookManager.runOnError(hookCtx, error);
+
         next(error);
       }
     };
@@ -515,21 +547,15 @@ class Application {
   /**
    * Register lifecycle hooks
    */
-  public onRequest(
-    hook: (req: Request, res: Response) => void | Promise<void>
-  ): void {
+  public onRequest(hook: OnRequestHook): void {
     this.hooks.onRequest.push(hook);
   }
 
-  public onResponse(
-    hook: (req: Request, res: Response, result: unknown) => void | Promise<void>
-  ): void {
+  public onResponse(hook: OnResponseHook): void {
     this.hooks.onResponse.push(hook);
   }
 
-  public onError(
-    hook: (error: Error, req: Request, res: Response) => void | Promise<void>
-  ): void {
+  public onError(hook: OnErrorHook): void {
     this.hooks.onError.push(hook);
   }
 }
