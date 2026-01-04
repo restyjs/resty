@@ -84,6 +84,22 @@ export type {
   PaginatedResponse,
 } from "./serialization";
 
+// Health checks and graceful shutdown
+export {
+  healthCheck,
+  livenessProbe,
+  readinessProbe,
+  gracefulShutdown,
+  shutdownMiddleware,
+} from "./health";
+export type {
+  HealthStatus,
+  HealthCheckResult,
+  HealthCheck,
+  HealthCheckConfig,
+  GracefulShutdownOptions,
+} from "./health";
+
 // Error classes
 export {
   Exception,
