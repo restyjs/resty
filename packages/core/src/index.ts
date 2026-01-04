@@ -39,6 +39,7 @@ export type {
   SlugParam,
 } from "./types";
 export { defineHandler } from "./types";
+export { MetadataKeys } from "./metadataKeys";
 
 // Controller and HTTP method decorators
 export { Controller } from "./decorators/Controller";

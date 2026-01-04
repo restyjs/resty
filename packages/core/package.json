@@ -1,6 +1,6 @@
 {
   "name": "@restyjs/core",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Fast, opinionated, minimalist and testable web framework built on Express.js with TypeScript decorators",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

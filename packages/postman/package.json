@@ -1,7 +1,7 @@
 {
-    "name": "@restyjs/cache",
-    "version": "3.0.0",
-    "description": "Caching middleware and utilities for Resty.js applications",
+    "name": "@restyjs/postman",
+    "version": "1.1.0",
+    "description": "Postman Collection v2.1 generator for Resty.js",
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",
     "types": "./dist/index.d.ts",
@@ -18,12 +18,11 @@
         }
     },
     "license": "MIT",
-    "sideEffects": false,
     "files": [
         "dist/**"
     ],
     "scripts": {
-        "build": "tsup",
+        "build": "tsup src/index.ts --format cjs,esm --dts",
         "dev": "tsup --watch",
         "lint": "eslint src",
         "typecheck": "tsc --noEmit",
@@ -41,20 +40,22 @@
         "@restyjs/core": "^2.0.1"
     },
     "dependencies": {
-        "ioredis": "^5.4.1"
+        "postman-collection": "^5.0.0",
+        "reflect-metadata": "^0.2.2"
     },
     "devDependencies": {
         "@restyjs/core": "workspace:*",
-        "@types/express": "^5.0.0",
+        "@types/postman-collection": "^3.5.0",
         "@types/node": "^22.10.2",
-        "express": "^4.21.2",
         "typescript": "^5.7.2",
+        "tsup": "^8.3.5",
         "vitest": "^2.1.8"
     },
     "keywords": [
         "resty",
-        "cache",
-        "redis",
-        "in-memory"
+        "postman",
+        "collection",
+        "api",
+        "testing"
     ]
 }

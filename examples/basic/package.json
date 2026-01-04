@@ -1,7 +1,7 @@
 {
     "name": "basic-example",
     "private": true,
-    "version": "1.0.1",
+    "version": "1.0.2",
     "dependencies": {
         "@restyjs/core": "workspace:*",
         "reflect-metadata": "^0.2.2",
