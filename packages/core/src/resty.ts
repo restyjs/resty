@@ -17,6 +17,8 @@ import { HTTPMethodMetadata, HTTPMethod } from "./decorators/HttpMethods";
 import { RequestParamMetadata } from "./decorators/Param";
 import { Context } from "./context";
 import { Provider } from "./provider";
+import { Logger } from "./logger";
+import { createHooksManager } from "./hooks";
 
 type Middleware = RequestHandler | ErrorRequestHandler;
 
@@ -44,6 +46,16 @@ export interface RestyOptions {
   routePrefix?: string;
   /** Enable debug mode for verbose logging */
   debug?: boolean;
+  /** Enable access logging (morgan) */
+  logger?: boolean;
+  /** View engine */
+  viewEngine?: string;
+  /** Views directory */
+  views?: string;
+  /** Assets directory */
+  assets?: string | { prefix?: string; dir: string };
+  /** Container implementation */
+  container?: typeof Container;
   /** Lifecycle hooks */
   hooks?: {
     onRequest?: Array<(req: Request, res: Response) => void | Promise<void>>;
@@ -61,11 +73,8 @@ interface InternalHooks {
 }
 
 class Application {
-  private readonly hooks: InternalHooks = {
-    onRequest: [],
-    onResponse: [],
-    onError: [],
-  };
+  public logger: Logger;
+  private readonly hooks: InternalHooks;
 
   constructor(
     private readonly app: ExpressApplication,
@@ -74,24 +83,142 @@ class Application {
     private readonly providers: Provider[],
     private readonly options: RestyOptions
   ) {
-    this.initialize();
+    this.logger = new Logger(options.debug || process.env.RESTY_DEBUG === "true");
+
+    this.hooks = {
+      onRequest: options.hooks?.onRequest || [],
+      onResponse: options.hooks?.onResponse || [],
+      onError: options.hooks?.onError || [],
+    };
+
+    this.init();
   }
 
-  private initialize(): void {
+  private async init() {
+    this.logger.debug("Initializing Resty application...");
+
+    // Add morgan if requested
+    if (this.options.logger) {
+      try {
+        this.app.use(require("morgan")("dev"));
+      } catch (error) {
+        this.logger.warn("Morgan logger not found. Install 'morgan' to enable access logging.");
+      }
+    }
+
     try {
       // Initialize providers first
-      this.initProviders();
+      await this.initProviders();
+
+      // View engine setup
+      if (this.options.viewEngine) {
+        this.app.set("view engine", this.options.viewEngine);
+        if (this.options.views) {
+          this.app.set("views", this.options.views);
+        }
+      }
+
+      // Assets setup
+      if (this.options.assets) {
+        if (typeof this.options.assets === "string") {
+          this.app.use("/assets", express.static(this.options.assets));
+        } else {
+          this.app.use(
+            this.options.assets.prefix || "/assets",
+            express.static(this.options.assets.dir)
+          );
+        }
+      }
 
       // Initialize middlewares
       this.initTrustProxy();
       this.initBodyParser();
+
+      // Add request context middleware
+      this.app.use((req, _res, next) => {
+        // @ts-ignore
+        req.id = Math.random().toString(36).substring(7);
+        next();
+      });
+
       this.initPreMiddlewares();
 
+      // Initialize hook manager
+      const hookManager = createHooksManager();
+      // Register configured hooks
+      // Register configured hooks
+      this.hooks.onRequest.forEach(h => {
+        hookManager.addOnRequest(ctx => h(ctx.req, ctx.res));
+      });
+      this.hooks.onResponse.forEach(h => {
+        hookManager.addOnResponse((ctx, res) => h(ctx.req, ctx.res, res));
+      });
+      this.hooks.onError.forEach(h => {
+        hookManager.addOnError((ctx, err) => h(err, ctx.req, ctx.res));
+      });
+
+      // Register request hooks (before controllers)
+      this.app.use((req, res, _next) => {
+        hookManager.runOnRequest({
+          req,
+          res,
+          startTime: Date.now()
+        }).then(() => _next()).catch(_next);
+      });
+
       // Initialize routes and controllers
-      this.initControllers();
+      await this.initControllers();
 
       // Initialize post middlewares
       this.initPostMiddlewares();
+
+      // Global error handler
+      this.app.use(
+        (error: any, req: express.Request, res: express.Response, _next: express.NextFunction) => {
+          this.logger.error(`Error processing request ${req.method} ${req.url}`, error);
+
+          const ctx = {
+            req,
+            res,
+            startTime: (req as any)._startTime || Date.now(),
+            httpMethod: req.method,
+            path: req.path
+          };
+
+          // Execute error hooks
+          hookManager.runOnError(ctx, error)
+            .then(() => {
+              // Default error handling logic if not handled by hooks (i.e. if response not sent)
+              if (!res.headersSent) {
+                const status = error.status || 500;
+                let response: Record<string, unknown>;
+
+                if (typeof error.toJSON === "function") {
+                  response = error.toJSON();
+                } else {
+                  response = {
+                    error: error.name || "Internal Server Error",
+                    message: error.message,
+                    statusCode: status,
+                  };
+                }
+
+                if (this.logger.debugMode && error.stack) {
+                  response.stack = error.stack;
+                }
+
+                res.status(status).json(response);
+              }
+            })
+            .catch((err) => {
+              this.logger.error("Error in error hooks:", err);
+              if (!res.headersSent) {
+                res.status(500).json({ error: "Internal Server Error" });
+              }
+            });
+        }
+      );
+
     } catch (error) {
       console.error("[resty] Initialization error:", error);
       throw error;
@@ -114,6 +241,7 @@ class Application {
 
   private initPreMiddlewares(): void {
     if (this.options.middlewares) {
+      this.logger.debug(`Registering ${this.options.middlewares.length} pre-middlewares`);
       for (const middleware of this.options.middlewares) {
         this.app.use(middleware as RequestHandler);
       }
@@ -122,13 +250,14 @@ class Application {
 
   private initPostMiddlewares(): void {
     if (this.options.postMiddlewares) {
+      this.logger.debug(`Registering ${this.options.postMiddlewares.length} post-middlewares`);
       for (const middleware of this.options.postMiddlewares) {
         this.app.use(middleware as RequestHandler);
       }
     }
   }
 
-  private initControllers(): void {
+  private async initControllers(): Promise<void> {
     for (const controller of this.controllers) {
       const metadata: ControllerMetadata | undefined = Reflect.getMetadata(
         MetadataKeys.controller,
@@ -164,6 +293,8 @@ class Application {
     const controllerRouter = express.Router(metadata.options);
     const methodsMetadata: HTTPMethodMetadata[] =
       Reflect.getMetadata(MetadataKeys.httpMethod, controller as object) ?? [];
+
+    this.logger.debug(`Registering controller: ${metadata.path} (${methodsMetadata.length} routes)`);
 
     for (const methodMetadata of methodsMetadata) {
       const handler = this.createRequestHandler(controller, methodMetadata);
@@ -329,7 +460,7 @@ class Application {
         if (!provider.optional) {
           throw error;
         }
-        console.warn(`[resty] Optional provider failed:`, error);
+        this.logger.warn(`[resty] Optional provider failed:`, error);
       }
     }
   }

@@ -14,6 +14,8 @@ import { Service, Container, Inject } from "typedi";
 // Core exports
 export { resty };
 export type { RestyOptions };
+export { Logger, LogLevel } from "./logger";
+export type { ILogger } from "./logger";
 export default resty;
 
 // Type inference and utilities
