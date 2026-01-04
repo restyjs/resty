@@ -10,6 +10,7 @@ dist/
 packages/*/src/**/*.js
 packages/*/src/**/*.js.map
 packages/*/src/**/*.d.ts
+packages/*/src/**/*.d.mts
 
 # Test coverage
 coverage/
