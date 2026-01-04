@@ -188,6 +188,7 @@ export function JWTConfiguration(config: JWTConfig): JWTProvider {
 
 // Extend Express Request type
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Express {
     interface Request {
       token?: JwtPayload;
