@@ -44,16 +44,28 @@ export interface RestyOptions {
   routePrefix?: string;
   /** Enable debug mode for verbose logging */
   debug?: boolean;
+  /** Lifecycle hooks */
+  hooks?: {
+    onRequest?: Array<(req: Request, res: Response) => void | Promise<void>>;
+    onResponse?: Array<(req: Request, res: Response, result: unknown) => void | Promise<void>>;
+    onError?: Array<(error: Error, req: Request, res: Response) => void | Promise<void>>;
+  };
+  /** Response interceptors - transform response before sending */
+  responseInterceptors?: Array<(result: unknown, req: Request, res: Response) => unknown | Promise<unknown>>;
 }
 
-interface LifecycleHooks {
-  onRequest?: (req: Request, res: Response) => void | Promise<void>;
-  onResponse?: (req: Request, res: Response) => void | Promise<void>;
-  onError?: (error: Error, req: Request, res: Response) => void | Promise<void>;
+interface InternalHooks {
+  onRequest: Array<(req: Request, res: Response) => void | Promise<void>>;
+  onResponse: Array<(req: Request, res: Response, result: unknown) => void | Promise<void>>;
+  onError: Array<(error: Error, req: Request, res: Response) => void | Promise<void>>;
 }
 
 class Application {
-  private readonly hooks: LifecycleHooks = {};
+  private readonly hooks: InternalHooks = {
+    onRequest: [],
+    onResponse: [],
+    onError: [],
+  };
 
   constructor(
     private readonly app: ExpressApplication,
@@ -328,19 +340,19 @@ class Application {
   public onRequest(
     hook: (req: Request, res: Response) => void | Promise<void>
   ): void {
-    this.hooks.onRequest = hook;
+    this.hooks.onRequest.push(hook);
   }
 
   public onResponse(
-    hook: (req: Request, res: Response) => void | Promise<void>
+    hook: (req: Request, res: Response, result: unknown) => void | Promise<void>
   ): void {
-    this.hooks.onResponse = hook;
+    this.hooks.onResponse.push(hook);
   }
 
   public onError(
     hook: (error: Error, req: Request, res: Response) => void | Promise<void>
   ): void {
-    this.hooks.onError = hook;
+    this.hooks.onError.push(hook);
   }
 }
 

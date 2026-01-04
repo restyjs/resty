@@ -47,6 +47,43 @@ export { HttpCode, Redirect, SetHeader } from "./decorators/Response";
 export { Context } from "./context";
 export type { Provider } from "./provider";
 
+// Lifecycle hooks and interceptors
+export {
+  createHooksManager,
+  createInterceptorManager,
+  createInterceptorMiddleware,
+  requestTimingHook,
+  errorLoggingHook,
+} from "./hooks";
+export type {
+  HookContext,
+  OnRequestHook,
+  OnResponseHook,
+  OnErrorHook,
+  LifecycleHooks,
+  RequestInterceptor,
+  ResponseInterceptor,
+  Interceptors,
+} from "./hooks";
+
+// Response serialization
+export {
+  jsonSerializer,
+  dateSerializer,
+  bigIntSerializer,
+  wrapResponse,
+  transformResponse,
+  paginate,
+  exclude,
+  pick,
+} from "./serialization";
+export type {
+  ResponseSerializer,
+  TransformOptions,
+  ApiResponse,
+  PaginatedResponse,
+} from "./serialization";
+
 // Error classes
 export {
   Exception,
