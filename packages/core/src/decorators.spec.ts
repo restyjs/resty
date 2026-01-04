@@ -1,6 +1,6 @@
 
 import "reflect-metadata";
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import { MetadataKeys } from "./metadataKeys";
 import { Redirect, SetHeader } from "./decorators/Response";
 import { File, Files } from "./decorators/File";
