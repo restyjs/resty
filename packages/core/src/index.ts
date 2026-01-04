@@ -64,6 +64,7 @@ export type { RequestParamMetadata, RequestParamType } from "./decorators/Param"
 export { Header, Headers } from "./decorators/Header";
 export { Cookie, Cookies } from "./decorators/Cookie";
 export { Session } from "./decorators/Session";
+export { File, Files } from "./decorators/File";
 
 // Response decorators
 export { HttpCode, Redirect, SetHeader } from "./decorators/Response";

@@ -9,5 +9,5 @@ export const MetadataKeys = {
   headers: Symbol("resty:headers"),
   redirect: Symbol("resty:redirect"),
   render: Symbol("resty:render"),
-  validation: Symbol("resty:validation"),
+  validation: Symbol.for("resty:validation"),
 } as const;

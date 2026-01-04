@@ -6,7 +6,7 @@ import type { Request, Response, NextFunction, RequestHandler } from "express";
 /**
  * Metadata key for validation schemas
  */
-export const ValidationMetadataKey = Symbol("resty:validation");
+export const ValidationMetadataKey = Symbol.for("resty:validation");
 
 /**
  * Validation target (where to validate)

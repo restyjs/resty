@@ -1,4 +1,5 @@
 import type { RouterOptions, RequestHandler } from "express";
+import { Service } from "typedi";
 import { MetadataKeys } from "../metadataKeys";
 
 /**
@@ -44,5 +45,6 @@ export function Controller(
     };
 
     Reflect.defineMetadata(MetadataKeys.controller, metadata, target);
+    Service()(target);
   };
 }

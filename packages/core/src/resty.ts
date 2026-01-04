@@ -10,6 +10,7 @@ import express, {
 } from "express";
 
 import { Container } from "typedi";
+import * as crypto from "crypto";
 
 import { MetadataKeys } from "./metadataKeys";
 import { ControllerMetadata } from "./decorators/Controller";
@@ -19,6 +20,7 @@ import { Context } from "./context";
 import { Provider } from "./provider";
 import { Logger } from "./logger";
 import { createHooksManager, OnRequestHook, OnResponseHook, OnErrorHook } from "./hooks";
+import { ValidationError, NotFoundError } from "./errors";
 import type { CorsOptions } from "cors";
 import type { HelmetOptions } from "helmet";
 import type { CompressionOptions } from "compression";
@@ -151,7 +153,7 @@ class Application {
       // Add request context middleware
       this.app.use((req, _res, next) => {
         // @ts-expect-error -- req.id is explicitly added
-        req.id = Math.random().toString(36).substring(7);
+        req.id = crypto.randomUUID();
         next();
       });
 
@@ -186,6 +188,20 @@ class Application {
 
       // Initialize post middlewares
       this.initPostMiddlewares();
+
+      // Default 404 handler if NOT handled by postMiddlewares
+      const hasNotFoundHandler = this.options.postMiddlewares?.some(
+        m => m.name === "NotFoundErrorHandler" || m.length === 3 // Rough heuristic
+      );
+      if (!hasNotFoundHandler) {
+        this.app.use((req, res, next) => {
+          if (!res.headersSent) {
+            next(new NotFoundError(`Cannot ${req.method} ${req.path}`));
+          } else {
+            next();
+          }
+        });
+      }
 
       // Global error handler
       this.app.use(
@@ -249,8 +265,8 @@ class Application {
   private initBodyParser(): void {
     const enabled = this.options.bodyParser ?? true;
     if (enabled) {
-      this.app.use(express.urlencoded({ extended: false }));
-      this.app.use(express.json());
+      this.app.use(express.urlencoded({ extended: false, limit: "10mb" }));
+      this.app.use(express.json({ limit: "10mb" }));
     }
   }
 
@@ -396,6 +412,55 @@ class Application {
   ): RequestHandler {
     return async (req: Request, res: Response, next: NextFunction) => {
       try {
+        // Local validation interface to avoid circular dependency
+        interface ValidationMetadata {
+          target: "body" | "query" | "params";
+          schema: { safeParseAsync: (data: unknown) => Promise<{ success: boolean; data?: unknown; error?: unknown }> };
+          parameterIndex: number;
+        }
+
+        // Validate request data before resolving arguments
+        const validationMetadata: ValidationMetadata[] = Reflect.getMetadata(
+          MetadataKeys.validation,
+          controller as object,
+          metadata.propertyKey
+        ) ?? [];
+
+        for (const validation of validationMetadata) {
+          let data: unknown;
+          switch (validation.target) {
+            case "body":
+              data = req.body;
+              break;
+            case "query":
+              data = req.query;
+              break;
+            case "params":
+              data = req.params;
+              break;
+          }
+
+          const result = await validation.schema.safeParseAsync(data);
+          if (!result.success) {
+            throw new ValidationError("Validation Failed", result.error);
+          }
+
+          // Update the request data with validated/transformed data
+          switch (validation.target) {
+            case "body":
+              req.body = result.data;
+              break;
+            case "query":
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              (req as any).query = result.data;
+              break;
+            case "params":
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              (req as any).params = result.data;
+              break;
+          }
+        }
+
         const args = this.resolveArguments(controller, metadata, req, res, next);
         const controllerInstance = this.container.get(controller as new () => unknown);
         const method = (controllerInstance as Record<string, unknown>)[
@@ -412,7 +477,7 @@ class Application {
         }
 
         // Execute onResponse hooks
-        const startTime = (req as any)._resty_startTime || Date.now();
+        const startTime = (req as any)._startTime || Date.now();
         const hookCtx = {
           req,
           res,
@@ -425,6 +490,32 @@ class Application {
 
         await this.hookManager.runOnResponse(hookCtx, result);
 
+        // Check for custom headers (SetHeader)
+        const headers: Array<{ name: string; value: string }> | undefined = Reflect.getMetadata(
+          MetadataKeys.headers,
+          controller as object,
+          metadata.propertyKey
+        );
+
+        if (headers) {
+          for (const header of headers) {
+            res.setHeader(header.name, header.value);
+          }
+        }
+
+        // Check for redirect decorator
+        const redirect: { url: string; statusCode: number } | undefined = Reflect.getMetadata(
+          MetadataKeys.redirect,
+          controller as object,
+          metadata.propertyKey
+        );
+
+        if (redirect) {
+          if (!res.headersSent) {
+            return res.redirect(redirect.statusCode, redirect.url);
+          }
+        }
+
         // Check for custom status code
         const statusCode: number | undefined = Reflect.getMetadata(
           MetadataKeys.httpCode,
@@ -432,7 +523,7 @@ class Application {
           metadata.propertyKey
         );
 
-        if (statusCode) {
+        if (statusCode && !res.headersSent) {
           res.status(statusCode);
         }
 
@@ -451,7 +542,7 @@ class Application {
         }
       } catch (error: any) {
         // Execute onError hooks for route errors
-        const startTime = (req as any)._resty_startTime || Date.now();
+        const startTime = (req as any)._startTime || Date.now();
         const hookCtx = {
           req,
           res,
@@ -539,6 +630,14 @@ class Application {
         return req;
       case "response":
         return res;
+      case "file":
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        return param.name
+          ? (req as any).files?.[param.name]
+          : (req as any).file;
+      case "files":
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        return (req as any).files;
       case "context":
         return new Context(req, res, next);
       default:
